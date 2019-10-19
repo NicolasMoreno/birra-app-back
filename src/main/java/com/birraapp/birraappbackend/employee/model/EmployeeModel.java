@@ -2,7 +2,7 @@ package com.birraapp.birraappbackend.employee.model;
 
 
 import com.birraapp.birraappbackend.employee.model.dto.UpdateEmployeeDTO;
-import com.birraapp.birraappbackend.user.dto.UpdateUserDTO;
+import com.birraapp.birraappbackend.profile.model.ProfileModel;
 import com.birraapp.birraappbackend.user.model.UserModel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,16 +24,19 @@ public class EmployeeModel {
     @JoinColumn(name = "user_id", nullable = false)
     private UserModel user;
 
-    //    private ProfileModel profile;
+    @OneToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "profile_id", nullable = false)
+    private ProfileModel profile;
 
-    public EmployeeModel(Long id, UserModel user) {
+    public EmployeeModel(Long id, UserModel user, ProfileModel profile) {
         this.id = id;
         this.user = user;
+        this.profile = profile;
     }
 
     public UpdateEmployeeDTO toDTO() {
         return new UpdateEmployeeDTO(
-                id, user.toDTO()
+                id, user.toDTO(), profile.toDTO()
         );
     }
 

@@ -1,4 +1,4 @@
-package com.birraapp.birraappbackend.user.dto;
+package com.birraapp.birraappbackend.user.model.dto;
 
 import com.birraapp.birraappbackend.user.model.UserModel;
 

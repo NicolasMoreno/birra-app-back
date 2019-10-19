@@ -1,7 +1,6 @@
 package com.birraapp.birraappbackend.user.model;
 
-import com.birraapp.birraappbackend.employee.model.EmployeeModel;
-import com.birraapp.birraappbackend.user.dto.UpdateUserDTO;
+import com.birraapp.birraappbackend.user.model.dto.UpdateUserDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,7 +8,6 @@ import org.hibernate.annotations.GenericGenerator;
 
 
 import javax.persistence.*;
-import java.util.UUID;
 
 @Getter
 @Setter

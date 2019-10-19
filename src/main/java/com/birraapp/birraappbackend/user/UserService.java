@@ -1,7 +1,7 @@
 package com.birraapp.birraappbackend.user;
 
-import com.birraapp.birraappbackend.user.dto.CreateUserDTO;
-import com.birraapp.birraappbackend.user.dto.UpdateUserDTO;
+import com.birraapp.birraappbackend.user.model.dto.CreateUserDTO;
+import com.birraapp.birraappbackend.user.model.dto.UpdateUserDTO;
 import com.birraapp.birraappbackend.user.model.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

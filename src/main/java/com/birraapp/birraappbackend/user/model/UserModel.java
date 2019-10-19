@@ -1,6 +1,9 @@
 package com.birraapp.birraappbackend.user.model;
 
+import com.birraapp.birraappbackend.employee.model.EmployeeModel;
+import com.birraapp.birraappbackend.user.dto.UpdateUserDTO;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -11,6 +14,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
 public class UserModel {
 
     @Id
@@ -30,6 +34,11 @@ public class UserModel {
 
     private String password;
 
+//    @OneToOne(mappedBy = "user_id",
+//            fetch = FetchType.LAZY,
+//            cascade =  CascadeType.ALL)
+//    private EmployeeModel employee;
+
     public UserModel(String id, String username, String name, String lastName, String mail, String password) {
         this.id = id;
         this.username = username;
@@ -39,51 +48,9 @@ public class UserModel {
         this.password = password;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getMail() {
-        return mail;
-    }
-
-    public void setMail(String mail) {
-        this.mail = mail;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+    public UpdateUserDTO toDTO() {
+        return new UpdateUserDTO(
+                id, username, name, lastName, mail, password
+        );
     }
 }

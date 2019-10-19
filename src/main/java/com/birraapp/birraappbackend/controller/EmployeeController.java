@@ -25,6 +25,9 @@ public class EmployeeController {
 
     @PutMapping("/")
     public ResponseEntity updateEmployee(@RequestBody UpdateEmployeeDTO updateEmployeeDTO) {
+        if (updateEmployeeDTO.getId() == null) return ResponseEntity.badRequest().body("Usuario a editar no tiene ID");
+        final Optional<EmployeeModel> employeeById = employeeService.getEmployeeById(updateEmployeeDTO.getId());
+        if (!employeeById.isPresent()) return ResponseEntity.badRequest().body("Empleado a editar no encontrado");
         return ResponseEntity.ok(employeeService.updateEmployee(updateEmployeeDTO));
     }
 

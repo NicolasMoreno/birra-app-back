@@ -36,8 +36,10 @@ public class ProductItem{
         this.quantity = quantity;
     }
 
-    public ProductItemDTO toDTO() {
-        return new ProductItemDTO(
+    public UpdateProductItemDTO toDTO() {
+        return new UpdateProductItemDTO(
+                id,
+                product.getId(),
                 material.toDTO(),
                 quantity
         );

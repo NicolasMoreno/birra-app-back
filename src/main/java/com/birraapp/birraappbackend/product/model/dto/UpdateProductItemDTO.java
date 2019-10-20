@@ -11,11 +11,13 @@ import lombok.Setter;
 @NoArgsConstructor
 public class UpdateProductItemDTO extends ProductItemDTO {
 
-    private ProductModel product;
+    private Long id;
+    private Long productId;
 
-    public UpdateProductItemDTO( ProductModel product, CreateMaterialDTO material, Double quantity) {
+    public UpdateProductItemDTO(Long id, Long productId, CreateMaterialDTO material, Double quantity) {
         super(material, quantity);
-        this.product = product;
+        this.id = id;
+        this.productId = productId;
     }
 
     @Override

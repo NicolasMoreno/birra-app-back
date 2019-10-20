@@ -28,4 +28,6 @@ public class UnitModel {
 
     private String abbreviation;
 
+    private QuantityType quantityType;
+
 }

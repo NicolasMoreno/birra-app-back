@@ -3,13 +3,13 @@ package com.birraapp.birraappbackend.product.model;
 
 import com.birraapp.birraappbackend.product.model.dto.ProductItemDTO;
 import com.birraapp.birraappbackend.product.model.dto.UpdateProductDTO;
+import com.birraapp.birraappbackend.product.model.dto.UpdateProductItemDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -45,9 +45,8 @@ public class ProductModel {
     }
 
     public UpdateProductDTO toDTO() {
-        final Set<ProductItemDTO> items = materials.stream().map(ProductItem::toDTO).collect(Collectors.toSet());
         return new UpdateProductDTO(
-                id, name, description, items.toArray(new ProductItemDTO[0])
+                id, name, description, materials.stream().map(ProductItem::toDTO).distinct().toArray(UpdateProductItemDTO[]::new)
         );
     }
 }

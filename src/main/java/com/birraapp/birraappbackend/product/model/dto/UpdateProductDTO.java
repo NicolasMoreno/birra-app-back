@@ -10,7 +10,7 @@ public class UpdateProductDTO extends CreateProductDTO {
 
     private Long id;
 
-    public UpdateProductDTO(Long id, String name, String description, ProductItemDTO ...productItems) {
+    public UpdateProductDTO(Long id, String name, String description, UpdateProductItemDTO ...productItems) {
         super(name, description, productItems);
         this.id = id;
     }

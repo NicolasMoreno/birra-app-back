@@ -3,6 +3,7 @@ package com.birraapp.birraappbackend.product;
 import com.birraapp.birraappbackend.AbstractIntegrationTest;
 import com.birraapp.birraappbackend.product.model.MaterialModel;
 import com.birraapp.birraappbackend.product.model.ProductModel;
+import com.birraapp.birraappbackend.product.model.QuantityType;
 import com.birraapp.birraappbackend.product.model.UnitModel;
 import com.birraapp.birraappbackend.product.model.dto.CreateMaterialDTO;
 import com.birraapp.birraappbackend.product.model.dto.CreateProductDTO;
@@ -32,9 +33,9 @@ public class ProductServiceTest extends AbstractIntegrationTest {
     @Before
     public void setUp() {
 
-        final UnitModel litrosUnit = unitService.saveUnit(new UnitModel("1", "LITRO", "Lt."));
-        final UnitModel kilosUnit = unitService.saveUnit(new UnitModel("2", "KILO", "Kg."));
-        final UnitModel unitsUnit = unitService.saveUnit(new UnitModel("3", "UNIDADES", "un"));
+        final UnitModel litrosUnit = unitService.saveUnit(new UnitModel("1", "LITRO", "Lt.", QuantityType.REAL));
+        final UnitModel kilosUnit = unitService.saveUnit(new UnitModel("2", "KILO", "Kg.", QuantityType.REAL));
+        final UnitModel unitsUnit = unitService.saveUnit(new UnitModel("3", "UNIDADES", "un", QuantityType.INTEGER));
 
         final CreateMaterialDTO material1 = generateMaterial("Lupulo", kilosUnit);
         final CreateMaterialDTO material2 = generateMaterial("Agua", litrosUnit);
@@ -84,10 +85,9 @@ public class ProductServiceTest extends AbstractIntegrationTest {
         final MaterialModel newMaterial = materialService.createMaterial(generateMaterial("Etiquetas", units));
         testingProduct.getMaterials().add(generateProductItem(newMaterial.toDTO(), 200D).toModel(testingProduct));
 
-        final ProductModel updatedTestingProduct = productService.updateproduct(testingProduct.toDTO());
+        final ProductModel updatedTestingProduct = productService.updateProduct(testingProduct.toDTO());
 
         Assert.that(updatedTestingProduct.getId().equals(testingProduct.getId()), "Asserting id has not changed");
-
         Assert.that(updatedTestingProduct.getMaterials().stream().anyMatch( item -> item.getMaterial().getId().equals(newMaterial.getId())),
                 "Asserting has added new material");
 

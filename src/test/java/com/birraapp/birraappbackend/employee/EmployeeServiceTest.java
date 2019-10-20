@@ -14,7 +14,8 @@ import com.birraapp.birraappbackend.user.model.UserModel;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import sun.jvm.hotspot.utilities.Assert;
+
+import org.junit.Assert;
 
 import java.util.HashSet;
 import java.util.List;
@@ -53,32 +54,32 @@ public class EmployeeServiceTest extends AbstractIntegrationTest {
     public void ABMEmployeeTest() {
         final EmployeeModel savedEmployee = employeeService.saveEmployee(testingEmployee);
 
-        Assert.that(savedEmployee.getId() != null, "Asserting savedEmployee has ID");
-        Assert.that(savedEmployee.getUser().getUsername().equalsIgnoreCase(testingEmployee.getUser().getUsername()), "Asserting content is not changed");
-        Assert.that(savedEmployee.getProfile().getSectors().size() == 2, "Asserting has 2 sectors profile");
-        Assert.that(savedEmployee.getProfile().getName().equals("admin"), "Asserting has admin profile");
+        Assert.assertNotNull("Asserting savedEmployee has ID", savedEmployee.getId());
+        Assert.assertTrue("Asserting content is not changed",savedEmployee.getUser().getUsername().equalsIgnoreCase(testingEmployee.getUser().getUsername()));
+        Assert.assertEquals("Asserting has 2 sectors profile", 2, savedEmployee.getProfile().getSectors().size());
+        Assert.assertEquals("Asserting has admin profile", "admin", savedEmployee.getProfile().getName());
 
         final Optional<EmployeeModel> optionalFoundEmployee = employeeService.getEmployeeById(savedEmployee.getId());
-        Assert.that(optionalFoundEmployee.isPresent(), "Asserting is saved on DB");
+        Assert.assertTrue("Asserting is saved on DB", optionalFoundEmployee.isPresent());
 
         final EmployeeModel employee = optionalFoundEmployee.get();
         employee.getUser().setUsername("changedUsernameTest");
 
         final EmployeeModel updatedEmployee = employeeService.updateEmployee(employee.toDTO());
 
-        Assert.that(updatedEmployee.getId().equals(employee.getId()), "Asserting updated id is equals");
-        Assert.that(updatedEmployee.getUser().getUsername().equals(employee.getUser().getUsername()), "Asserting content has updated");
+        Assert.assertEquals("Asserting updated id is equals", updatedEmployee.getId(), employee.getId());
+        Assert.assertEquals("Asserting content has updated", updatedEmployee.getUser().getUsername(), employee.getUser().getUsername());
 
         final String userId = updatedEmployee.getUser().getId();
 
         employeeService.deleteEmployee(updatedEmployee.toDTO());
 
         final Optional<EmployeeModel> optionalFoundEmployee2 = employeeService.getEmployeeById(updatedEmployee.getId());
-        Assert.that(!optionalFoundEmployee2.isPresent(), "Asserting Deleted Employee");
+        Assert.assertFalse(optionalFoundEmployee2.isPresent());
 
         final Optional<UserModel> userById = userService.getUserById(userId);
 
-        Assert.that(!userById.isPresent(), "Asserting user is deleted also");
+        Assert.assertFalse(userById.isPresent());
 
     }
 

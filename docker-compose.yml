@@ -1,0 +1,27 @@
+version: '3.3'
+
+# para correr solo la base de datos:
+# docker-compose run --service-ports database
+
+services:
+  database:
+    image: mysql:8.0.12
+    #    command: --default-authentication-plugin=mysql_native_password
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: birradb
+      MYSQL_USER: birrauser
+      MYSQL_PASSWORD: birra1337
+      MYSQL_ROOT_PASSWORD: root
+  backend:
+    image: springio/birraapp-backend
+    restart: always
+    environment: # Pass environment variables to the service
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/birradb?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false
+      SPRING_DATASOURCE_USERNAME: birrauser
+      SPRING_DATASOURCE_PASSWORD: birra1337
+    ports:
+      - "8080:8080"
+    depends_on:
+      - database

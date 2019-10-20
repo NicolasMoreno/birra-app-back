@@ -13,7 +13,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import sun.jvm.hotspot.utilities.Assert;
+import org.junit.Assert;
+
 
 public class ProductServiceTest extends AbstractIntegrationTest {
 
@@ -59,26 +60,26 @@ public class ProductServiceTest extends AbstractIntegrationTest {
         );
 
         testingProduct = productService.saveProduct(productDTO);
-        Assert.that(testingProduct.getId() != null, "Asserting saved product has id");
+        Assert.assertNotNull("Asserting saved product has id", testingProduct.getId());
 
-        Assert.that(
-                testingProduct.getMaterials().stream().anyMatch(item -> item.getMaterial().getId().equals(lupulo.getId())),
-                "Testing if product has material1"
+        Assert.assertTrue(
+                "Testing if product has material1",
+                testingProduct.getMaterials().stream().anyMatch(item -> item.getMaterial().getId().equals(lupulo.getId()))
         );
 
-        Assert.that(
-                testingProduct.getMaterials().stream().anyMatch(item -> item.getMaterial().getId().equals(agua.getId())),
-                "Testing if product has material2"
+        Assert.assertTrue(
+                "Testing if product has material2",
+                testingProduct.getMaterials().stream().anyMatch(item -> item.getMaterial().getId().equals(agua.getId()))
         );
 
-        Assert.that(
-                testingProduct.getMaterials().stream().anyMatch(item -> item.getMaterial().getId().equals(tapitas.getId())),
-                "Testing if product has material3"
+        Assert.assertTrue(
+                "Testing if product has material3",
+                testingProduct.getMaterials().stream().anyMatch(item -> item.getMaterial().getId().equals(tapitas.getId()))
         );
 
-        Assert.that(
-                testingProduct.getMaterials().stream().anyMatch(item -> item.getMaterial().getId().equals(botellas.getId())),
-                "Testing if product has material4"
+        Assert.assertTrue(
+                "Testing if product has material4",
+                testingProduct.getMaterials().stream().anyMatch(item -> item.getMaterial().getId().equals(botellas.getId()))
         );
 
         final UnitModel units = unitService.findUnit("3").get();
@@ -87,9 +88,8 @@ public class ProductServiceTest extends AbstractIntegrationTest {
 
         final ProductModel updatedTestingProduct = productService.updateProduct(testingProduct.toDTO());
 
-        Assert.that(updatedTestingProduct.getId().equals(testingProduct.getId()), "Asserting id has not changed");
-        Assert.that(updatedTestingProduct.getMaterials().stream().anyMatch( item -> item.getMaterial().getId().equals(newMaterial.getId())),
-                "Asserting has added new material");
+        Assert.assertEquals("Asserting id has not changed", updatedTestingProduct.getId(), testingProduct.getId());
+        Assert.assertTrue("Asserting has added new material", updatedTestingProduct.getMaterials().stream().anyMatch( item -> item.getMaterial().getId().equals(newMaterial.getId())));
 
 
     }

@@ -1,0 +1,102 @@
+package com.birraapp.birraappbackend.product;
+
+import com.birraapp.birraappbackend.AbstractIntegrationTest;
+import com.birraapp.birraappbackend.product.model.MaterialModel;
+import com.birraapp.birraappbackend.product.model.ProductModel;
+import com.birraapp.birraappbackend.product.model.dto.CreateMaterialDTO;
+import com.birraapp.birraappbackend.product.model.dto.CreateProductDTO;
+import com.birraapp.birraappbackend.product.model.dto.ProductItemDTO;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import sun.jvm.hotspot.utilities.Assert;
+
+public class ProductServiceTest extends AbstractIntegrationTest {
+
+    @Autowired
+    private ProductService productService;
+
+    @Autowired
+    private MaterialService materialService;
+
+    private ProductModel testingProduct;
+    private MaterialModel lupulo;
+    private MaterialModel agua;
+    private MaterialModel tapitas;
+    private MaterialModel botellas;
+
+    @Before
+    public void setUp() {
+        final CreateMaterialDTO material1 = generateMaterial("Lupulo");
+        final CreateMaterialDTO material2 = generateMaterial("Agua");
+        final CreateMaterialDTO material3 = generateMaterial("Tapitas");
+        final CreateMaterialDTO material4 = generateMaterial("Botellas");
+        lupulo = materialService.createMaterial(material1);
+        agua = materialService.createMaterial(material2);
+        tapitas = materialService.createMaterial(material3);
+        botellas = materialService.createMaterial(material4);
+
+    }
+
+    @Test
+    public void testProduct() {
+        final CreateProductDTO productDTO = generateProduct("Negra",
+                "Cerveza Negra 5% 4.5%",
+                generateProductItem(lupulo.toDTO(), 20D),
+                generateProductItem(agua.toDTO(), 10D),
+                generateProductItem(tapitas.toDTO(), 2D),
+                generateProductItem(botellas.toDTO(), 200D)
+        );
+
+        testingProduct = productService.saveProduct(productDTO);
+        Assert.that(testingProduct.getId() != null, "Asserting saved product has id");
+
+        Assert.that(
+                testingProduct.getMaterials().stream().anyMatch(item -> item.getMaterial().getId().equals(lupulo.getId())),
+                "Testing if product has material1"
+        );
+
+        Assert.that(
+                testingProduct.getMaterials().stream().anyMatch(item -> item.getMaterial().getId().equals(agua.getId())),
+                "Testing if product has material2"
+        );
+
+        Assert.that(
+                testingProduct.getMaterials().stream().anyMatch(item -> item.getMaterial().getId().equals(tapitas.getId())),
+                "Testing if product has material3"
+        );
+
+        Assert.that(
+                testingProduct.getMaterials().stream().anyMatch(item -> item.getMaterial().getId().equals(botellas.getId())),
+                "Testing if product has material4"
+        );
+
+        final MaterialModel newMaterial = materialService.createMaterial(generateMaterial("Etiquetas"));
+        testingProduct.getMaterials().add(generateProductItem(newMaterial.toDTO(), 200D).toModel(testingProduct));
+
+        final ProductModel updatedTestingProduct = productService.updateproduct(testingProduct.toDTO());
+
+        Assert.that(updatedTestingProduct.getId().equals(testingProduct.getId()), "Asserting id has not changed");
+
+        Assert.that(updatedTestingProduct.getMaterials().stream().anyMatch( item -> item.getMaterial().getId().equals(newMaterial.getId())),
+                "Asserting has added new material");
+
+
+    }
+
+    private ProductItemDTO generateProductItem(CreateMaterialDTO material, Double quantity) {
+        return new ProductItemDTO(material, quantity);
+    }
+
+    private CreateProductDTO generateProduct(String name, String description, ProductItemDTO ...productItems) {
+        return new CreateProductDTO(name, description, productItems);
+    }
+
+    private CreateMaterialDTO generateMaterial(String materialName) {
+        return new CreateMaterialDTO(
+                materialName
+        );
+    }
+}

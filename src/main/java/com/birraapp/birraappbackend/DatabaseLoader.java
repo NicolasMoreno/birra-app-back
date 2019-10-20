@@ -22,4 +22,6 @@ public class DatabaseLoader implements CommandLineRunner {
                 "admin123"
         ));
     }
+
+
 }

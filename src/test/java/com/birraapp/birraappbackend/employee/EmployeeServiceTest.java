@@ -10,7 +10,7 @@ import com.birraapp.birraappbackend.sector.model.SectorModel;
 import com.birraapp.birraappbackend.user.UserService;
 import com.birraapp.birraappbackend.user.model.dto.CreateUserDTO;
 import com.birraapp.birraappbackend.user.model.UserModel;
-import org.assertj.core.util.Lists;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,6 @@ import sun.jvm.hotspot.utilities.Assert;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 
 public class EmployeeServiceTest extends AbstractIntegrationTest {
@@ -49,10 +48,6 @@ public class EmployeeServiceTest extends AbstractIntegrationTest {
 
     }
 
-//    @Test
-//    public void ProfileTest() {
-//
-//    }
 
     @Test
     public void ABMEmployeeTest() {

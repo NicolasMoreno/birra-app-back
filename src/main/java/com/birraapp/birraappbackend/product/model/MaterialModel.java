@@ -20,14 +20,17 @@ public class MaterialModel {
 
     private String name;
 
+    @ManyToOne(optional = false, targetEntity = UnitModel.class)
+    private UnitModel unit;
 
-    public MaterialModel(String name) {
+    public MaterialModel(String name, UnitModel unit) {
         this.name = name;
+        this.unit = unit;
     }
 
     public UpdateMaterialDTO toDTO() {
         return new UpdateMaterialDTO(
-                name, id
+                name, id, unit
         );
     }
 }

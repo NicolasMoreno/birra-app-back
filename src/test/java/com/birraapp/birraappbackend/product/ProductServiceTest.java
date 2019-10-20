@@ -3,6 +3,7 @@ package com.birraapp.birraappbackend.product;
 import com.birraapp.birraappbackend.AbstractIntegrationTest;
 import com.birraapp.birraappbackend.product.model.MaterialModel;
 import com.birraapp.birraappbackend.product.model.ProductModel;
+import com.birraapp.birraappbackend.product.model.UnitModel;
 import com.birraapp.birraappbackend.product.model.dto.CreateMaterialDTO;
 import com.birraapp.birraappbackend.product.model.dto.CreateProductDTO;
 import com.birraapp.birraappbackend.product.model.dto.ProductItemDTO;
@@ -17,9 +18,10 @@ public class ProductServiceTest extends AbstractIntegrationTest {
 
     @Autowired
     private ProductService productService;
-
     @Autowired
     private MaterialService materialService;
+    @Autowired
+    private UnitService unitService;
 
     private ProductModel testingProduct;
     private MaterialModel lupulo;
@@ -29,10 +31,15 @@ public class ProductServiceTest extends AbstractIntegrationTest {
 
     @Before
     public void setUp() {
-        final CreateMaterialDTO material1 = generateMaterial("Lupulo");
-        final CreateMaterialDTO material2 = generateMaterial("Agua");
-        final CreateMaterialDTO material3 = generateMaterial("Tapitas");
-        final CreateMaterialDTO material4 = generateMaterial("Botellas");
+
+        final UnitModel litrosUnit = unitService.saveUnit(new UnitModel("1", "LITRO", "Lt."));
+        final UnitModel kilosUnit = unitService.saveUnit(new UnitModel("2", "KILO", "Kg."));
+        final UnitModel unitsUnit = unitService.saveUnit(new UnitModel("3", "UNIDADES", "un"));
+
+        final CreateMaterialDTO material1 = generateMaterial("Lupulo", kilosUnit);
+        final CreateMaterialDTO material2 = generateMaterial("Agua", litrosUnit);
+        final CreateMaterialDTO material3 = generateMaterial("Tapitas", unitsUnit);
+        final CreateMaterialDTO material4 = generateMaterial("Botellas", unitsUnit);
         lupulo = materialService.createMaterial(material1);
         agua = materialService.createMaterial(material2);
         tapitas = materialService.createMaterial(material3);
@@ -73,7 +80,8 @@ public class ProductServiceTest extends AbstractIntegrationTest {
                 "Testing if product has material4"
         );
 
-        final MaterialModel newMaterial = materialService.createMaterial(generateMaterial("Etiquetas"));
+        final UnitModel units = unitService.findUnit("3").get();
+        final MaterialModel newMaterial = materialService.createMaterial(generateMaterial("Etiquetas", units));
         testingProduct.getMaterials().add(generateProductItem(newMaterial.toDTO(), 200D).toModel(testingProduct));
 
         final ProductModel updatedTestingProduct = productService.updateproduct(testingProduct.toDTO());
@@ -94,9 +102,9 @@ public class ProductServiceTest extends AbstractIntegrationTest {
         return new CreateProductDTO(name, description, productItems);
     }
 
-    private CreateMaterialDTO generateMaterial(String materialName) {
+    private CreateMaterialDTO generateMaterial(String materialName, UnitModel unit) {
         return new CreateMaterialDTO(
-                materialName
+                materialName, unit
         );
     }
 }

@@ -1,6 +1,7 @@
 package com.birraapp.birraappbackend.product.model.dto;
 
 import com.birraapp.birraappbackend.product.model.MaterialModel;
+import com.birraapp.birraappbackend.product.model.UnitModel;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,8 +11,8 @@ public class UpdateMaterialDTO extends CreateMaterialDTO {
 
     private Long id;
 
-    public UpdateMaterialDTO(String name, Long id) {
-        super(name);
+    public UpdateMaterialDTO(String name, Long id, UnitModel unit) {
+        super(name, unit);
         this.id = id;
     }
 

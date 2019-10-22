@@ -41,7 +41,7 @@ public class EmployeeController {
         }
     }
 
-    @GetMapping("/")
+    @GetMapping("/all")
     public ResponseEntity getAllEmployees() {
         return ResponseEntity.ok(employeeService.getAll());
     }

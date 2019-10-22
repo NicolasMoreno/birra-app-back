@@ -36,7 +36,7 @@ public class EmployeeProfileController {
         else return ResponseEntity.status(400).body("No se encontró el perfil");
     }
 
-    @GetMapping("/")
+    @GetMapping("/all")
     public ResponseEntity getAllProfiles() {
         return ResponseEntity.ok(profileService.getAll());
     }

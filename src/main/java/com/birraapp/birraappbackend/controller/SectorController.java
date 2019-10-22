@@ -33,7 +33,7 @@ public class SectorController {
         else return ResponseEntity.status(400).body("No se encontró sector");
     }
 
-    @GetMapping("/")
+    @GetMapping("/all")
     public ResponseEntity getAll() {
         return ResponseEntity.ok(sectorService.getAllSectors());
     }

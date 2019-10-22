@@ -31,4 +31,7 @@ public class ProfileService {
         return profileRepository.findById(profileId);
     }
 
+    public Iterable<ProfileModel> getAll() {
+        return profileRepository.findAll();
+    }
 }

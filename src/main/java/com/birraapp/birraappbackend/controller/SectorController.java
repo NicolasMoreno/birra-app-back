@@ -32,4 +32,9 @@ public class SectorController {
         if (sectorById.isPresent()) return ResponseEntity.ok(sectorById.get());
         else return ResponseEntity.status(400).body("No se encontró sector");
     }
+
+    @GetMapping("/")
+    public ResponseEntity getAll() {
+        return ResponseEntity.ok(sectorService.getAllSectors());
+    }
 }

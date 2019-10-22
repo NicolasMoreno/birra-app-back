@@ -18,7 +18,7 @@ services:
     networks:
       - backend
   back:
-    image: springio/birraapp-backend
+    image: nicolasmoreno/birraapp-backend
     #container_name: birra_container
     restart: always
     environment: # Pass environment variables to the service

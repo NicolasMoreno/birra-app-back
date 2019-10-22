@@ -31,8 +31,8 @@ public class EmployeeController {
         return ResponseEntity.ok(employeeService.updateEmployee(updateEmployeeDTO));
     }
 
-    @GetMapping("/")
-    public ResponseEntity getEmployeeById(@RequestParam Long employeeId) {
+    @GetMapping("/{employeeId}")
+    public ResponseEntity getEmployeeById(@PathVariable Long employeeId) {
         final Optional<EmployeeModel> employeeById = employeeService.getEmployeeById(employeeId);
         if (employeeById.isPresent()) {
             return ResponseEntity.ok(employeeById.get());

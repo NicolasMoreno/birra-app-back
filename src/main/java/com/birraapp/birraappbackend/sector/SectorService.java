@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SectorService {
@@ -26,7 +27,15 @@ public class SectorService {
         return resultList;
     }
 
+    public Iterable<SectorModel> getAllSectors() {
+        return sectorRepository.findAll();
+    }
+
     public void deleteSector(SectorModel sector) {
         sectorRepository.delete(sector);
+    }
+
+    public Optional<SectorModel> findSectorById(Long id) {
+        return sectorRepository.findById(id);
     }
 }

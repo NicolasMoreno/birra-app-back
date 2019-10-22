@@ -40,4 +40,9 @@ public class EmployeeController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Emplpeado no encontrado");
         }
     }
+
+    @GetMapping("/")
+    public ResponseEntity getAllEmployees() {
+        return ResponseEntity.ok(employeeService.getAll());
+    }
 }

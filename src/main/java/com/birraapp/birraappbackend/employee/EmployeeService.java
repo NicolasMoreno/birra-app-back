@@ -31,4 +31,7 @@ public class EmployeeService {
         return employeeRepository.findById(employeeId);
     }
 
+    public Iterable<EmployeeModel> getAll() {
+        return employeeRepository.findAll();
+    }
 }

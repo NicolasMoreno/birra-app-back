@@ -34,9 +34,9 @@ public class ProductServiceTest extends AbstractIntegrationTest {
     @Before
     public void setUp() {
 
-        final UnitModel litrosUnit = unitService.saveUnit(new UnitModel("1", "LITRO", "Lt.", QuantityType.REAL));
-        final UnitModel kilosUnit = unitService.saveUnit(new UnitModel("2", "KILO", "Kg.", QuantityType.REAL));
-        final UnitModel unitsUnit = unitService.saveUnit(new UnitModel("3", "UNIDADES", "un", QuantityType.INTEGER));
+        final UnitModel litrosUnit = unitService.saveUnit(new UnitModel(1L, "LITRO", "Lt.", QuantityType.REAL));
+        final UnitModel kilosUnit = unitService.saveUnit(new UnitModel(2L, "KILO", "Kg.", QuantityType.REAL));
+        final UnitModel unitsUnit = unitService.saveUnit(new UnitModel(3L, "UNIDADES", "un", QuantityType.INTEGER));
 
         final CreateMaterialDTO material1 = generateMaterial("Lupulo", kilosUnit);
         final CreateMaterialDTO material2 = generateMaterial("Agua", litrosUnit);

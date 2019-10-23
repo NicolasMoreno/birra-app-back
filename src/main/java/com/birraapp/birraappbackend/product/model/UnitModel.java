@@ -5,10 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -20,8 +17,8 @@ import javax.validation.constraints.NotNull;
 public class UnitModel {
 
     @Id
-    @NotNull
-    private String id;
+    @NotNull @GeneratedValue
+    private Long id;
 
     @Column(name = "unit_name", nullable = false)
     private String unitName;

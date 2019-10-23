@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -44,10 +46,10 @@ public class EmployeeController {
 
     @GetMapping("/all")
     public ResponseEntity getAllEmployees() {
-        return ResponseEntity.ok(employeeService.getAll());
+        List<EmployeeModel> list = new ArrayList();
+        employeeService.getAll().forEach(list::add);
+        return ResponseEntity.ok(list);
     }
-
-    // TODO deleteMapping
 
     @DeleteMapping("/{id}")
     public ResponseEntity deleteEmployee(@PathVariable Long id) {

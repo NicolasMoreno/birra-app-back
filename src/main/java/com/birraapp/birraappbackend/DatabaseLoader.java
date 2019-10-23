@@ -72,7 +72,6 @@ public class DatabaseLoader implements CommandLineRunner {
 //        sectorService.saveSector(recirculado);
         final ProfileModel savedProfile = profileService.saveProfile(admin);
 
-
         final CreateEmployeeDTO firstEmployee = new CreateEmployeeDTO(
                 user, savedProfile.toDTO()
         );

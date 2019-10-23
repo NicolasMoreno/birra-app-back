@@ -5,6 +5,7 @@ import com.birraapp.birraappbackend.employee.model.EmployeeModel;
 import com.birraapp.birraappbackend.employee.model.dto.CreateEmployeeDTO;
 import com.birraapp.birraappbackend.profile.ProfileService;
 import com.birraapp.birraappbackend.profile.model.dto.CreateProfileDTO;
+import com.birraapp.birraappbackend.profile.model.dto.UpdateProfileDTO;
 import com.birraapp.birraappbackend.sector.SectorService;
 import com.birraapp.birraappbackend.sector.model.SectorModel;
 import com.birraapp.birraappbackend.user.UserService;
@@ -34,7 +35,7 @@ public class EmployeeServiceTest extends AbstractIntegrationTest {
     private ProfileService profileService;
 
     private CreateEmployeeDTO testingEmployee;
-    private CreateProfileDTO testingProfile;
+    private UpdateProfileDTO testingProfile;
     private List<SectorModel> sectorList;
 
     @Before
@@ -99,8 +100,8 @@ public class EmployeeServiceTest extends AbstractIntegrationTest {
     }
 
     private void generateProfile() {
-        testingProfile = new CreateProfileDTO(
-                "admin"
+        testingProfile = new UpdateProfileDTO(
+                "admin", 1L
         );
     }
 

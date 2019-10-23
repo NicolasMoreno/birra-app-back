@@ -2,6 +2,7 @@ package com.birraapp.birraappbackend.employee.model.dto;
 
 import com.birraapp.birraappbackend.employee.model.EmployeeModel;
 import com.birraapp.birraappbackend.profile.model.dto.CreateProfileDTO;
+import com.birraapp.birraappbackend.profile.model.dto.UpdateProfileDTO;
 import com.birraapp.birraappbackend.user.model.dto.CreateUserDTO;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,9 +12,9 @@ import lombok.Setter;
 public class CreateEmployeeDTO {
 
     CreateUserDTO user;
-    CreateProfileDTO profile;
+    UpdateProfileDTO profile;
 
-    public CreateEmployeeDTO(CreateUserDTO user, CreateProfileDTO profile) {
+    public CreateEmployeeDTO(CreateUserDTO user, UpdateProfileDTO profile) {
         this.user = user;
         this.profile = profile;
     }

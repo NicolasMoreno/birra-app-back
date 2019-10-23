@@ -23,14 +23,13 @@ public class SectorModel {
 
     private String name;
 
-    @ManyToMany(cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE
-    }, mappedBy = "sectors")
-    private Set<ProfileModel> profiles = new HashSet<>();
+//    @ManyToMany(cascade = {
+//            CascadeType.PERSIST,
+//            CascadeType.MERGE
+//    }, mappedBy = "sectors")
+//    private Set<ProfileModel> profiles = new HashSet<>();
 
     public SectorModel(String name, Set<ProfileModel> profiles) {
         this.name = name;
-        this.profiles = profiles;
-    }
+    } // this.profiles = profiles;
 }

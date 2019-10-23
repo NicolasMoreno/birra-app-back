@@ -11,6 +11,7 @@ import java.util.Optional;
 
 @Service
 @RequestMapping("/sectors")
+@CrossOrigin(origins = "*", methods = {RequestMethod.POST, RequestMethod.GET, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS})
 public class SectorController {
 
     @Autowired

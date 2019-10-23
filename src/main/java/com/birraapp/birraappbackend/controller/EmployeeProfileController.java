@@ -41,4 +41,14 @@ public class EmployeeProfileController {
     public ResponseEntity getAllProfiles() {
         return ResponseEntity.ok(profileService.getAll());
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteEmployee(@PathVariable Long id) {
+        final Optional<ProfileModel> profile = profileService.findProfileById(id);
+        if (profile.isPresent()) {
+            return ResponseEntity.ok(profileService.deleteProfile(profile.get().toDTO()));
+        } else {
+            return ResponseEntity.status(404).body("No se encontró perfil a eliminar");
+        }
+    }
 }

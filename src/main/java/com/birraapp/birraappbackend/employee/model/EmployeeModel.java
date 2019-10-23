@@ -24,8 +24,8 @@ public class EmployeeModel {
     @JoinColumn(name = "user_id", nullable = false)
     private UserModel user;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "profile_id", nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "profile_id")
     private ProfileModel profile;
 
     public EmployeeModel(Long id, UserModel user, ProfileModel profile) {

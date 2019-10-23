@@ -34,4 +34,9 @@ public class ProfileService {
     public Iterable<ProfileModel> getAll() {
         return profileRepository.findAll();
     }
+
+    public boolean deleteProfile(UpdateProfileDTO updateProfileDTO) {
+        profileRepository.delete(updateProfileDTO.toModel());
+        return true;
+    }
 }

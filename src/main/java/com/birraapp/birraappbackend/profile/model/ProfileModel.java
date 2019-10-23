@@ -26,10 +26,7 @@ public class ProfileModel {
     @Column
     private String name;
 
-    @ManyToMany(cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE
-    })
+    @ManyToMany()
     @JoinTable(
             name = "profile_sector",
             joinColumns = @JoinColumn(name = "profile_id"),

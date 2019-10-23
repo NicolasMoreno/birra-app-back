@@ -63,13 +63,13 @@ public class DatabaseLoader implements CommandLineRunner {
         admin.getSectors().add(macerado);
         admin.getSectors().add(fermentacion_y_madurado);
         admin.getSectors().add(hervido);
-//        sectorService.saveSector(embotellado_y_gasificado);
-//        sectorService.saveSector(enfriado);
-//        sectorService.saveSector(molido);
-//        sectorService.saveSector(macerado);
-//        sectorService.saveSector(fermentacion_y_madurado);
-//        sectorService.saveSector(hervido);
-//        sectorService.saveSector(recirculado);
+        sectorService.saveSector(embotellado_y_gasificado);
+        sectorService.saveSector(enfriado);
+        sectorService.saveSector(molido);
+        sectorService.saveSector(macerado);
+        sectorService.saveSector(fermentacion_y_madurado);
+        sectorService.saveSector(hervido);
+        sectorService.saveSector(recirculado);
         final ProfileModel savedProfile = profileService.saveProfile(admin);
 
         final CreateEmployeeDTO firstEmployee = new CreateEmployeeDTO(

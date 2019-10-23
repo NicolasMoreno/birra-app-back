@@ -13,6 +13,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/employees")
+@CrossOrigin(origins = "*", methods = {RequestMethod.POST, RequestMethod.GET, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS})
 public class EmployeeController {
 
     @Autowired
@@ -44,5 +45,17 @@ public class EmployeeController {
     @GetMapping("/all")
     public ResponseEntity getAllEmployees() {
         return ResponseEntity.ok(employeeService.getAll());
+    }
+
+    // TODO deleteMapping
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteEmployee(@PathVariable Long id) {
+        final Optional<EmployeeModel> employeeById = employeeService.getEmployeeById(id);
+        if (employeeById.isPresent()) {
+            return ResponseEntity.ok(employeeService.deleteEmployee(employeeById.get().toDTO()));
+        } else {
+            return ResponseEntity.status(404).body("No se encontró empleado a deletear");
+        }
     }
 }

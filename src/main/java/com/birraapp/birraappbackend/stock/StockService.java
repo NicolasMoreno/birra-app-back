@@ -48,4 +48,7 @@ public class StockService {
         return optionalStock.map(stockModel -> stockModel.isStockAvailable(totalAmount)).orElse(false);
     }
 
+    public Iterable<StockModel> getAllMaterials() {
+        return stockRepository.findAll();
+    }
 }

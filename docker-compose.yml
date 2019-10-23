@@ -26,7 +26,7 @@ services:
       SPRING_DATASOURCE_USERNAME: birrauser
       SPRING_DATASOURCE_PASSWORD: birra1337
       SPRING_PROFILES_ACTIVE: dev
-      SPRING_JPA_HIBERNATE_DDL-AUTO: update
+      SPRING_JPA_HIBERNATE_DDL-AUTO: create
       SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.MySQL8Dialect
     ports:
       - "80:8080"

@@ -38,6 +38,10 @@ public class ProductServiceTest extends AbstractIntegrationTest {
         final UnitModel kilosUnit = unitService.saveUnit(new UnitModel(2L, "KILO", "Kg.", QuantityType.REAL));
         final UnitModel unitsUnit = unitService.saveUnit(new UnitModel(3L, "UNIDADES", "un", QuantityType.INTEGER));
 
+        unitService.saveUnit(litrosUnit);
+        unitService.saveUnit(kilosUnit);
+        unitService.saveUnit(unitsUnit);
+
         final CreateMaterialDTO material1 = generateMaterial("Lupulo", kilosUnit);
         final CreateMaterialDTO material2 = generateMaterial("Agua", litrosUnit);
         final CreateMaterialDTO material3 = generateMaterial("Tapitas", unitsUnit);
@@ -82,7 +86,7 @@ public class ProductServiceTest extends AbstractIntegrationTest {
                 testingProduct.getMaterials().stream().anyMatch(item -> item.getMaterial().getId().equals(botellas.getId()))
         );
 
-        final UnitModel units = unitService.findUnit("3").get();
+        final UnitModel units = unitService.findUnit(3L).get();
         final MaterialModel newMaterial = materialService.createMaterial(generateMaterial("Etiquetas", units));
         testingProduct.getMaterials().add(generateProductItem(newMaterial.toDTO(), 200D).toModel(testingProduct));
 

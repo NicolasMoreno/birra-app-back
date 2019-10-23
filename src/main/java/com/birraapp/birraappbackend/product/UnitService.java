@@ -16,7 +16,7 @@ public class UnitService {
         return unitRepository.save(unitModel);
     }
 
-    public Optional<UnitModel> findUnit(String unitId) {
+    public Optional<UnitModel> findUnit(Long unitId) {
         return unitRepository.findById(unitId);
     }
 }

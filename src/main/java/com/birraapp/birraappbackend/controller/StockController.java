@@ -35,9 +35,14 @@ public class StockController {
         return ResponseEntity.ok(isAvailable);
     }
 
-    @GetMapping("/{materialId}")
+    @GetMapping("/material/{materialId}")
     public ResponseEntity getMaterialStock(@PathVariable Long materialId) {
         return ResponseEntity.ok(stockService.findStockByMaterialId(materialId));
+    }
+
+    @GetMapping("/{stockId}")
+    public ResponseEntity getStock(@PathVariable Long stockId) {
+        return ResponseEntity.ok(stockService.findStockById(stockId));
     }
 
     @GetMapping("/all")

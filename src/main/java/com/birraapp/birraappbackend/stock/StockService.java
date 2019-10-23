@@ -51,4 +51,8 @@ public class StockService {
     public Iterable<StockModel> getAllMaterials() {
         return stockRepository.findAll();
     }
+
+    public Optional<StockModel> findStockById(Long stockId) {
+        return stockRepository.findById(stockId);
+    }
 }

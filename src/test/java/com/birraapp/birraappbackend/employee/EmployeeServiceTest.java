@@ -43,6 +43,8 @@ public class EmployeeServiceTest extends AbstractIntegrationTest {
         generateProfile();
         final SectorModel aSector = newSector("A");
         final SectorModel bSector = newSector("B");
+        sectorService.saveSector(aSector);
+        sectorService.saveSector(bSector);
         testingProfile.getSectors().add(aSector);
         testingProfile.getSectors().add(bSector);
         testingProfile = profileService.saveProfile(testingProfile).toDTO();

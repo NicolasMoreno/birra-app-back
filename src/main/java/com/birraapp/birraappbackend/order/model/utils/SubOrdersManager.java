@@ -27,7 +27,7 @@ public class SubOrdersManager {
 
     public static CreateSubOrderDTO buildNewSubOrder(OrderProcess process) {
         return new CreateSubOrderDTO(
-                null, OrderState.IN_PROGRESS, null,process, "", "", new Date(), null
+                null, OrderState.IN_PROGRESS, null, process, "", "", new Date(), null
         );
     }
 

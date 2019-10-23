@@ -20,7 +20,6 @@ public class ProductService {
     @Autowired
     private ProductItemRepository productItemRepository;
 
-
     @Autowired
     private StockService stockService;
 
@@ -37,11 +36,10 @@ public class ProductService {
     }
 
 
-    // TODO check unit test of this.
     public boolean checkProductAvailability(Long productId, Integer productAmount) {
         final List<ProductItem> productItems = productItemRepository.findByProduct_Id(productId);
         return productItems.stream()
-                .allMatch(item -> stockService.checkMaterialStock(item.getId(), item.getQuantity() * productAmount));
+                .allMatch(item -> stockService.checkMaterialStock(item.getMaterial().getId(), item.getQuantity() * productAmount));
     }
 
 }

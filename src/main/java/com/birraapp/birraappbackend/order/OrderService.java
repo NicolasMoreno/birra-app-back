@@ -4,6 +4,7 @@ import com.birraapp.birraappbackend.order.model.OrderModel;
 import com.birraapp.birraappbackend.order.model.dto.CreateOrderDTO;
 import com.birraapp.birraappbackend.order.model.dto.UpdateOrderDTO;
 import com.birraapp.birraappbackend.product.model.ProductModel;
+import com.birraapp.birraappbackend.stock.StockService;
 import com.birraapp.birraappbackend.stock.model.dto.RequestOrderDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,9 @@ public class OrderService {
 
     @Autowired
     private OrderRepository orderRepository;
+
+    @Autowired
+    private StockService stockService;
 
     public OrderModel addOrder(CreateOrderDTO createOrderDTO) {
         return orderRepository.save(createOrderDTO.toModel());
@@ -34,10 +38,12 @@ public class OrderService {
     }
 
     public OrderModel createNewOrder(ProductModel productModel, RequestOrderDTO requestOrderDTO) {
+        productModel.getMaterials().forEach(material -> stockService.consumeMaterial(material.getMaterial().getId(), material.getQuantity() * requestOrderDTO.getOrderAmount()));
         return addOrder(CreateOrderDTO.startNewOrder(productModel.toDTO(), requestOrderDTO.getOrderAmount(), requestOrderDTO.getDescription()));
     }
 
     public Iterable<OrderModel> getAll() {
         return orderRepository.findAll();
     }
+
 }

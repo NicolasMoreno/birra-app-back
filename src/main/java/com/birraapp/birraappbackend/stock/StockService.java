@@ -20,7 +20,6 @@ public class StockService {
         return stockRepository.findByMaterial_Id(materialId);
     }
 
-    // TODO check unit test of this.
     public Optional<StockModel> reStockMaterial(Long materialId, Double sumQuantity) {
         final Optional<StockModel> optionalStock = findStockByMaterialId(materialId);
         if (!optionalStock.isPresent()) return Optional.empty();
@@ -42,7 +41,6 @@ public class StockService {
         }
     }
 
-    // TODO check unit test of this.
     public boolean checkMaterialStock(Long materialId, Double totalAmount) {
         final Optional<StockModel> optionalStock = findStockByMaterialId(materialId);
         return optionalStock.map(stockModel -> stockModel.isStockAvailable(totalAmount)).orElse(false);

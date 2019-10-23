@@ -43,4 +43,9 @@ public class OrderController {
     public ResponseEntity getOrderById(@PathVariable Long orderId) {
         return ResponseEntity.ok(orderService.findOrderById(orderId));
     }
+
+    @GetMapping("/all")
+    public ResponseEntity getAll() {
+        return ResponseEntity.ok(orderService.getAll());
+    }
 }

@@ -1,6 +1,10 @@
 package com.birraapp.birraappbackend.product;
 
 import com.birraapp.birraappbackend.AbstractIntegrationTest;
+import com.birraapp.birraappbackend.employee.EmployeeService;
+import com.birraapp.birraappbackend.order.OrderService;
+import com.birraapp.birraappbackend.order.model.OrderModel;
+import com.birraapp.birraappbackend.order.model.OrderState;
 import com.birraapp.birraappbackend.product.model.MaterialModel;
 import com.birraapp.birraappbackend.product.model.ProductModel;
 import com.birraapp.birraappbackend.product.model.QuantityType;
@@ -9,11 +13,17 @@ import com.birraapp.birraappbackend.product.model.dto.CreateMaterialDTO;
 import com.birraapp.birraappbackend.product.model.dto.CreateProductDTO;
 import com.birraapp.birraappbackend.product.model.dto.ProductItemDTO;
 
+import com.birraapp.birraappbackend.stock.StockRepository;
+import com.birraapp.birraappbackend.stock.StockService;
+import com.birraapp.birraappbackend.stock.model.StockModel;
+import com.birraapp.birraappbackend.stock.model.dto.RequestOrderDTO;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.junit.Assert;
+
+import java.util.Optional;
 
 
 public class ProductServiceTest extends AbstractIntegrationTest {
@@ -24,6 +34,12 @@ public class ProductServiceTest extends AbstractIntegrationTest {
     private MaterialService materialService;
     @Autowired
     private UnitService unitService;
+    @Autowired
+    private StockService stockService;
+    @Autowired
+    private OrderService orderService;
+    @Autowired
+    private EmployeeService employeeService;
 
     private ProductModel testingProduct;
     private MaterialModel lupulo;
@@ -51,6 +67,11 @@ public class ProductServiceTest extends AbstractIntegrationTest {
         tapitas = materialService.createMaterial(material3);
         botellas = materialService.createMaterial(material4);
 
+        stockService.saveStock(new StockModel(null, agua, 500D));
+        stockService.saveStock(new StockModel(null, lupulo, 5D));
+        stockService.saveStock(new StockModel(null, tapitas, 50D));
+        stockService.saveStock(new StockModel(null, botellas, 500D));
+
     }
 
     @Test
@@ -59,8 +80,8 @@ public class ProductServiceTest extends AbstractIntegrationTest {
                 "Cerveza Negra 5% 4.5%",
                 generateProductItem(lupulo.toDTO(), 20D),
                 generateProductItem(agua.toDTO(), 10D),
-                generateProductItem(tapitas.toDTO(), 2D),
-                generateProductItem(botellas.toDTO(), 200D)
+                generateProductItem(tapitas.toDTO(), 1D),
+                generateProductItem(botellas.toDTO(), 1D)
         );
 
         testingProduct = productService.saveProduct(productDTO);
@@ -95,6 +116,64 @@ public class ProductServiceTest extends AbstractIntegrationTest {
         Assert.assertEquals("Asserting id has not changed", updatedTestingProduct.getId(), testingProduct.getId());
         Assert.assertTrue("Asserting has added new material", updatedTestingProduct.getMaterials().stream().anyMatch( item -> item.getMaterial().getId().equals(newMaterial.getId())));
 
+
+    }
+
+    @Test
+    public void testProductStock() {
+        final CreateProductDTO productDTO = generateProduct("Negra",
+                "Cerveza Negra 5% 4.5%",
+                generateProductItem(lupulo.toDTO(), 10D),
+                generateProductItem(agua.toDTO(), 10D),
+                generateProductItem(tapitas.toDTO(), 1D),
+                generateProductItem(botellas.toDTO(), 1D)
+        );
+        final ProductModel productToTest = productService.saveProduct(productDTO);
+
+        Assert.assertFalse(productService.checkProductAvailability(productToTest.getId(), 4000));
+
+        // Aumento el stock para poder producir esa cantidad
+
+        stockService.reStockMaterial(lupulo.getId(), 50000D);
+        stockService.reStockMaterial(agua.getId(), 50000D);
+        stockService.reStockMaterial(tapitas.getId(), 4100D);
+        stockService.reStockMaterial(botellas.getId(), 4100D);
+
+        final Optional<StockModel> stockByMaterialId = stockService.findStockByMaterialId(lupulo.getId());
+
+        Assert.assertTrue(stockByMaterialId.isPresent());
+        Assert.assertTrue(stockByMaterialId.get().getStoredQuantity() > 50000D);
+
+        Assert.assertTrue(productService.checkProductAvailability(productToTest.getId(), 4000));
+
+    }
+
+    @Test
+    public void testCreatingOrder() {
+        final Double lupuloQuantity = 15D;
+        final CreateProductDTO productDTO = generateProduct("Rubia",
+                "Cerveza Rubia 3.5% 4.5%",
+                generateProductItem(lupulo.toDTO(), lupuloQuantity),
+                generateProductItem(agua.toDTO(), 20D),
+                generateProductItem(tapitas.toDTO(), 1D),
+                generateProductItem(botellas.toDTO(), 1D)
+        );
+        final ProductModel productToTest = productService.saveProduct(productDTO);
+
+        stockService.reStockMaterial(lupulo.getId(), 49995D);
+        stockService.reStockMaterial(agua.getId(), 50000D);
+        stockService.reStockMaterial(tapitas.getId(), 4100D);
+        stockService.reStockMaterial(botellas.getId(), 4100D);
+
+        final RequestOrderDTO requestOrder = new RequestOrderDTO(productToTest.getId(), 2, "Hacer rapido por favor");
+
+        final OrderModel newOrder = orderService.createNewOrder(productToTest, requestOrder);
+        Assert.assertEquals(newOrder.getProduct().getId(), productToTest.getId());
+        Assert.assertEquals(newOrder.getState(), OrderState.IN_PROGRESS);
+
+        final Optional<StockModel> optionalLupulo = stockService.findStockByMaterialId(lupulo.getId());
+        Assert.assertTrue(optionalLupulo.isPresent());
+        Assert.assertEquals( 50000D - (lupuloQuantity * 2), optionalLupulo.get().getStoredQuantity(), 0.00001);
 
     }
 

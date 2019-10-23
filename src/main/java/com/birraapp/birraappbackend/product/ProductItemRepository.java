@@ -7,6 +7,5 @@ import java.util.List;
 
 public interface ProductItemRepository extends CrudRepository<ProductItem, Long> {
 
-    // TODO check unit test of this.
     List<ProductItem> findByProduct_Id(Long productId);
 }

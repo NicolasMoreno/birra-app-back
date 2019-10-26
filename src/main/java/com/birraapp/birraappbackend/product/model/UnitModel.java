@@ -18,7 +18,7 @@ public class UnitModel {
 
     @Id
     @NotNull @GeneratedValue
-    private Long id;
+    private Integer id;
 
     @Column(name = "unit_name", nullable = false)
     private String unitName;

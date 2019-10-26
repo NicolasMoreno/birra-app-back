@@ -47,12 +47,17 @@ public class ProductServiceTest extends AbstractIntegrationTest {
     private MaterialModel tapitas;
     private MaterialModel botellas;
 
+    private UnitModel litrosUnit;
+    private UnitModel kilosUnit;
+    private UnitModel unitsUnit;
+
+
     @Before
     public void setUp() {
 
-        final UnitModel litrosUnit = unitService.saveUnit(new UnitModel(1L, "LITRO", "Lt.", QuantityType.REAL));
-        final UnitModel kilosUnit = unitService.saveUnit(new UnitModel(2L, "KILO", "Kg.", QuantityType.REAL));
-        final UnitModel unitsUnit = unitService.saveUnit(new UnitModel(3L, "UNIDADES", "un", QuantityType.INTEGER));
+        litrosUnit = unitService.saveUnit(new UnitModel(1, "LITRO", "Lt.", QuantityType.REAL));
+        kilosUnit = unitService.saveUnit(new UnitModel(2, "KILO", "Kg.", QuantityType.REAL));
+        unitsUnit = unitService.saveUnit(new UnitModel(3, "UNIDADES", "un", QuantityType.INTEGER));
 
         unitService.saveUnit(litrosUnit);
         unitService.saveUnit(kilosUnit);
@@ -107,8 +112,7 @@ public class ProductServiceTest extends AbstractIntegrationTest {
                 testingProduct.getMaterials().stream().anyMatch(item -> item.getMaterial().getId().equals(botellas.getId()))
         );
 
-        final UnitModel units = unitService.findUnit(3L).get();
-        final MaterialModel newMaterial = materialService.createMaterial(generateMaterial("Etiquetas", units));
+        final MaterialModel newMaterial = materialService.createMaterial(generateMaterial("Etiquetas", unitsUnit));
         testingProduct.getMaterials().add(generateProductItem(newMaterial.toDTO(), 200D).toModel(testingProduct));
 
         final ProductModel updatedTestingProduct = productService.updateProduct(testingProduct.toDTO());

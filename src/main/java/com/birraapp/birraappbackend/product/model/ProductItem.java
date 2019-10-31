@@ -1,8 +1,9 @@
 package com.birraapp.birraappbackend.product.model;
 
-import com.birraapp.birraappbackend.product.model.dto.CreateProductDTO;
-import com.birraapp.birraappbackend.product.model.dto.ProductItemDTO;
 import com.birraapp.birraappbackend.product.model.dto.UpdateProductItemDTO;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,13 +15,15 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "product_material")
+@JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class ProductItem{
 
     @Id
     @GeneratedValue
     private Long id;
 
-    @ManyToOne
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private ProductModel product;
 

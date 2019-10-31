@@ -15,7 +15,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/orders")
 @CrossOrigin(origins = "*", methods = {RequestMethod.POST, RequestMethod.GET, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS})
-public class OrderController {
+public class CustomerOrderController {
 
     @Autowired
     private OrderService orderService;
@@ -42,10 +42,5 @@ public class OrderController {
     @GetMapping("/{orderId}")
     public ResponseEntity getOrderById(@PathVariable Long orderId) {
         return ResponseEntity.ok(orderService.findOrderById(orderId));
-    }
-
-    @GetMapping("/all")
-    public ResponseEntity getAll() {
-        return ResponseEntity.ok(orderService.getAll());
     }
 }

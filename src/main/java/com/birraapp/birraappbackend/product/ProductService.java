@@ -35,11 +35,19 @@ public class ProductService {
         return productRepository.findById(productId);
     }
 
+    public Iterable<ProductModel> getAll() {
+        return productRepository.findAll();
+    }
 
     public boolean checkProductAvailability(Long productId, Integer productAmount) {
         final List<ProductItem> productItems = productItemRepository.findByProduct_Id(productId);
         return productItems.stream()
                 .allMatch(item -> stockService.checkMaterialStock(item.getMaterial().getId(), item.getQuantity() * productAmount));
+    }
+
+    public Integer checkMaxProductAvailability(Long productId) {
+        final List<ProductItem> productItems = productItemRepository.findByProduct_Id(productId);
+        return 0;
     }
 
 }

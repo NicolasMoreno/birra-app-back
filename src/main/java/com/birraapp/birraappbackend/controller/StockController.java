@@ -19,20 +19,11 @@ public class StockController {
     @Autowired
     private StockService stockService;
 
-    @Autowired
-    private ProductService productService;
-
     @PostMapping("/restock")
     public ResponseEntity restockMaterial(@RequestBody RestockDTO restockDTO) {
         final Optional<StockModel> stockModel = stockService.reStockMaterial(restockDTO.getMaterialId(), restockDTO.getRestockingAmount());
         if (stockModel.isPresent()) return ResponseEntity.ok(stockModel.get());
         else return ResponseEntity.status(404).body("Material no encontrado");
-    }
-
-    @PostMapping("/check")
-    public ResponseEntity checkProduct(@RequestBody RequestOrderDTO requestOrderDTO) {
-        final boolean isAvailable = productService.checkProductAvailability(requestOrderDTO.getProductId(), requestOrderDTO.getOrderAmount());
-        return ResponseEntity.ok(isAvailable);
     }
 
     @GetMapping("/material/{materialId}")

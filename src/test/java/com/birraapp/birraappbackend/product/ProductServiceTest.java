@@ -13,7 +13,6 @@ import com.birraapp.birraappbackend.product.model.dto.CreateMaterialDTO;
 import com.birraapp.birraappbackend.product.model.dto.CreateProductDTO;
 import com.birraapp.birraappbackend.product.model.dto.ProductItemDTO;
 
-import com.birraapp.birraappbackend.stock.StockRepository;
 import com.birraapp.birraappbackend.stock.StockService;
 import com.birraapp.birraappbackend.stock.model.StockModel;
 import com.birraapp.birraappbackend.stock.model.dto.RequestOrderDTO;
@@ -173,7 +172,7 @@ public class ProductServiceTest extends AbstractIntegrationTest {
 
         final OrderModel newOrder = orderService.createNewOrder(productToTest, requestOrder);
         Assert.assertEquals(newOrder.getProduct().getId(), productToTest.getId());
-        Assert.assertEquals(newOrder.getState(), OrderState.IN_PROGRESS);
+        Assert.assertEquals(newOrder.getState(), OrderState.EN_PROGRESO);
 
         final Optional<StockModel> optionalLupulo = stockService.findStockByMaterialId(lupulo.getId());
         Assert.assertTrue(optionalLupulo.isPresent());

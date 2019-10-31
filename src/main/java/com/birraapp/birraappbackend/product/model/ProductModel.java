@@ -1,9 +1,10 @@
 package com.birraapp.birraappbackend.product.model;
 
 
-import com.birraapp.birraappbackend.product.model.dto.ProductItemDTO;
 import com.birraapp.birraappbackend.product.model.dto.UpdateProductDTO;
 import com.birraapp.birraappbackend.product.model.dto.UpdateProductItemDTO;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,7 +12,6 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "products")

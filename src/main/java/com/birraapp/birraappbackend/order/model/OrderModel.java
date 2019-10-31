@@ -25,9 +25,9 @@ public class OrderModel {
     @GeneratedValue
     private Long id;
 
-    @OneToOne(targetEntity = ProductModel.class,
-            optional = false,
+    @ManyToOne(targetEntity = ProductModel.class,optional = false,
             fetch = FetchType.EAGER)
+    @JoinColumn(name = "product_id")
     private ProductModel product;
 
     @OneToMany(targetEntity = SubOrderModel.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -36,6 +36,7 @@ public class OrderModel {
     private OrderState state;
 
     private Date startedDate;
+    private Date finishedDate;
     private Integer orderAmount;
 //    private Date estimatedFinishDate;
     private String description;

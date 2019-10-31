@@ -19,7 +19,6 @@ import java.util.Date;
 public class CreateSubOrderDTO {
     private UpdateEmployeeDTO author;
     private OrderState state;
-    private UpdateOrderDTO customerOrder;
     private OrderProcess orderProcess;
     private String name;
     private String description;
@@ -30,7 +29,7 @@ public class CreateSubOrderDTO {
         final EmployeeModel employeeModel = author == null ? null : author.toModel(); // todo recibir de algún lado el intérprete del proceso. supongo que se lo updatea cuando se inicia el proceso
         return new SubOrderModel(
                 null, employeeModel,
-                state, null,
+                state,
                 orderProcess, name, description,
                 startedDate, finishedDate
         );

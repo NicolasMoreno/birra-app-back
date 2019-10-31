@@ -24,13 +24,14 @@ public class CreateOrderDTO {
     private Set<CreateSubOrderDTO> subOrders;
     private OrderState state;
     private Date startedDate;
+    private Date finishedDate;
     private Integer orderAmount;
     private String description;
 
     public static CreateOrderDTO startNewOrder(UpdateProductDTO product, Integer orderAmount, String description) {
         return new CreateOrderDTO(
                 product, SubOrdersManager.buildNewSubOrders(),
-                OrderState.IN_PROGRESS, new Date(),
+                OrderState.EN_PROGRESO, new Date(),null,
                 orderAmount, description
         );
     }
@@ -39,7 +40,7 @@ public class CreateOrderDTO {
         final Set<SubOrderModel> subOrderModelStream = subOrders.stream().map(CreateSubOrderDTO::toModel).collect(Collectors.toSet());
         return new OrderModel (
                 null, product.toModel(), subOrderModelStream,
-                state, startedDate, orderAmount, description
+                state, startedDate, finishedDate, orderAmount, description
         );
     }
 }

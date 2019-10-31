@@ -27,13 +27,13 @@ public class SubOrdersManager {
 
     public static CreateSubOrderDTO buildNewSubOrder(OrderProcess process) {
         return new CreateSubOrderDTO(
-                null, OrderState.IN_PROGRESS, null, process, "", "", new Date(), null
+                null, OrderState.EN_PROGRESO, null, "", "", new Date(), null
         );
     }
 
     public static CreateSubOrderDTO buildNonStartedSubOrder(OrderProcess process) {
         return new CreateSubOrderDTO(
-                null, OrderState.NON_STARTED, null, process, "", "", null, null
+                null, OrderState.NO_EMPEZADO, null, "", "", null, null
         );
     }
 }

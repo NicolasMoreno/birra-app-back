@@ -9,6 +9,9 @@ import com.birraapp.birraappbackend.product.UnitRepository;
 import com.birraapp.birraappbackend.product.model.MaterialModel;
 import com.birraapp.birraappbackend.product.model.QuantityType;
 import com.birraapp.birraappbackend.product.model.UnitModel;
+import com.birraapp.birraappbackend.product.model.dto.CreateMaterialDTO;
+import com.birraapp.birraappbackend.product.model.dto.CreateProductDTO;
+import com.birraapp.birraappbackend.product.model.dto.ProductItemDTO;
 import com.birraapp.birraappbackend.profile.ProfileService;
 import com.birraapp.birraappbackend.profile.model.ProfileModel;
 import com.birraapp.birraappbackend.profile.model.dto.CreateProfileDTO;
@@ -46,6 +49,70 @@ public class DatabaseLoader implements CommandLineRunner {
 
     @Override
     public void run(String... strings) throws Exception {
+
+        // SECTORES, PERFILES, USUARIOS, EMPLEADOS
+        addSectorsUserEmployee();
+
+        // UNIDADES
+        final UnitModel litros = new UnitModel(null, "Litros", "Lt.", QuantityType.REAL);
+        final UnitModel kilos = new UnitModel(null, "Kilos", "kg.", QuantityType.REAL);
+        final UnitModel unidades = new UnitModel(null, "Unidades", "ud.", QuantityType.INTEGER);
+        final UnitModel savedLitros = unitRepository.save(litros);
+        final UnitModel savedKilos = unitRepository.save(kilos);
+        final UnitModel savedUnidades = unitRepository.save(unidades);
+
+        // Materiales
+
+        final MaterialModel agua = new MaterialModel("Agua", savedLitros);
+        final MaterialModel botellas = new MaterialModel("Botellas", savedUnidades);
+        final MaterialModel chapitas = new MaterialModel("Chapitas", savedUnidades);
+        final MaterialModel levadura = new MaterialModel("Levadura", savedKilos);
+        final MaterialModel lupulo = new MaterialModel("Lúpulo", savedKilos);
+        final MaterialModel malta = new MaterialModel("Malta", savedKilos);
+        final MaterialModel miel = new MaterialModel("Miel", savedKilos);
+
+        final MaterialModel aguaModel = materialService.createMaterial(agua.toDTO());
+        final MaterialModel botellasModel = materialService.createMaterial(botellas.toDTO());
+        final MaterialModel chapitasModel = materialService.createMaterial(chapitas.toDTO());
+        final MaterialModel levaduraModel = materialService.createMaterial(levadura.toDTO());
+        final MaterialModel lupuloModel = materialService.createMaterial(lupulo.toDTO());
+        final MaterialModel maltaModel = materialService.createMaterial(malta.toDTO());
+        final MaterialModel mielModel = materialService.createMaterial(miel.toDTO());
+
+        // STOCK
+        stockRepository.save(new StockModel(null, aguaModel, 50000D));
+        stockRepository.save(new StockModel(null, botellasModel, 5000D));
+        stockRepository.save(new StockModel(null, chapitasModel, 5000D));
+        stockRepository.save(new StockModel(null, levaduraModel, 500D));
+        stockRepository.save(new StockModel(null, lupuloModel, 100D));
+        stockRepository.save(new StockModel(null, maltaModel, 100D));
+        stockRepository.save(new StockModel(null, mielModel, 100D));
+
+
+        final CreateProductDTO productDTO = generateProduct("Golden",
+                "Cerveza Rubia 5% 4.5%",
+                generateProductItem(lupuloModel.toDTO(), 0.005D),
+                generateProductItem(levaduraModel.toDTO(), 0.0025D),
+                generateProductItem(aguaModel.toDTO(), 0.34D),
+                generateProductItem(chapitasModel.toDTO(), 1D),
+                generateProductItem(botellasModel.toDTO(), 1D),
+                generateProductItem(maltaModel.toDTO(), 0.25D),
+                generateProductItem(mielModel.toDTO(), 0.05D)
+        );
+
+        productService.saveProduct(productDTO);
+
+    }
+
+    private CreateProductDTO generateProduct(String name, String description, ProductItemDTO ...productItems) {
+        return new CreateProductDTO(name, description, productItems);
+    }
+
+    private ProductItemDTO generateProductItem(CreateMaterialDTO material, Double quantity) {
+        return new ProductItemDTO(material, quantity);
+    }
+
+    private void addSectorsUserEmployee() {
         final CreateUserDTO user = new CreateUserDTO(
                 "adminadmin",
                 "admin",
@@ -55,7 +122,6 @@ public class DatabaseLoader implements CommandLineRunner {
         );
 
 
-        // SECTORES, PERFILES, USUARIOS, EMPLEADOS
         final SectorModel recirculado = new SectorModel("RECIRCULADO", new HashSet<>());
         final SectorModel embotellado_y_gasificado = new SectorModel("EMBOTELLADO Y GASIFICADO", new HashSet<>());
         final SectorModel enfriado = new SectorModel("ENFRIADO", new HashSet<>());
@@ -87,45 +153,6 @@ public class DatabaseLoader implements CommandLineRunner {
         );
 
         employeeService.saveEmployee(firstEmployee);
-
-        // UNIDADES
-
-        final UnitModel litros = new UnitModel(null, "Litros", "Lt.", QuantityType.REAL);
-        final UnitModel kilos = new UnitModel(null, "Kilos", "kg.", QuantityType.REAL);
-        final UnitModel unidades = new UnitModel(null, "Unidades", "ud.", QuantityType.INTEGER);
-        final UnitModel savedLitros = unitRepository.save(litros);
-        final UnitModel savedKilos = unitRepository.save(kilos);
-        final UnitModel savedUnidades = unitRepository.save(unidades);
-
-        // Materiales
-
-        final MaterialModel agua = new MaterialModel("Agua", savedLitros);
-        final MaterialModel botellas = new MaterialModel("Botellas", savedUnidades);
-        final MaterialModel chapitas = new MaterialModel("Chapitas", savedUnidades);
-        final MaterialModel levadura = new MaterialModel("Levadura", savedKilos);
-        final MaterialModel lupulo = new MaterialModel("Lúpulo", savedKilos);
-        final MaterialModel malta = new MaterialModel("Malta", savedKilos);
-        final MaterialModel miel = new MaterialModel("Miel", savedKilos);
-
-        final MaterialModel material1 = materialService.createMaterial(agua.toDTO());
-        final MaterialModel material2 = materialService.createMaterial(botellas.toDTO());
-        final MaterialModel material3 = materialService.createMaterial(chapitas.toDTO());
-        final MaterialModel material4 = materialService.createMaterial(levadura.toDTO());
-        final MaterialModel material5 = materialService.createMaterial(lupulo.toDTO());
-        final MaterialModel material6 = materialService.createMaterial(malta.toDTO());
-        final MaterialModel material7 = materialService.createMaterial(miel.toDTO());
-
-        // STOCK
-
-        stockRepository.save(new StockModel(null, material1, 50000D));
-        stockRepository.save(new StockModel(null, material2, 5000D));
-        stockRepository.save(new StockModel(null, material3, 5000D));
-        stockRepository.save(new StockModel(null, material4, 500D));
-        stockRepository.save(new StockModel(null, material5, 100D));
-        stockRepository.save(new StockModel(null, material6, 100D));
-        stockRepository.save(new StockModel(null, material7, 100D));
-
-
     }
 
 

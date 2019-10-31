@@ -46,6 +46,11 @@ public class StockService {
         return optionalStock.map(stockModel -> stockModel.isStockAvailable(totalAmount)).orElse(false);
     }
 
+    public Integer checkMaxMaterialAvailability(Double productQuantity, Long materialId) {
+        final Optional<StockModel> optionalStock = findStockByMaterialId(materialId);
+        return Integer.valueOf("10"); // todo acá calcular la cantidad máxima
+    }
+
     public Iterable<StockModel> getAllMaterials() {
         return stockRepository.findAll();
     }

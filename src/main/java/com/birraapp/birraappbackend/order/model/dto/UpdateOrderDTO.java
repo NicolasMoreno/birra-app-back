@@ -20,7 +20,7 @@ public class UpdateOrderDTO extends CreateOrderDTO {
     private Long id;
 
     public UpdateOrderDTO(UpdateProductDTO product, Set<CreateSubOrderDTO> subOrders, OrderState state, Date startedDate, Integer orderAmount, String description, Long id) {
-        super(product, subOrders, state, startedDate, orderAmount, description);
+        super(product, subOrders, state, startedDate, null, orderAmount, description);
         this.id = id;
     }
 

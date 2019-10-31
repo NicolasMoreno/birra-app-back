@@ -16,22 +16,22 @@ import java.util.Date;
 public class UpdateSubOrderDTO extends CreateSubOrderDTO {
     private Long id;
     public UpdateSubOrderDTO(UpdateEmployeeDTO author, OrderState state,
-                             UpdateOrderDTO customerOrder, OrderProcess orderProcess,
+                             OrderProcess orderProcess,
                              String name, String description, Date startedDate,
                              Date finishedDate, Long id) {
-        super(author, state, customerOrder,
+        super(author, state,
                 orderProcess, name, description,
                 startedDate, finishedDate);
         this.id = id;
     }
 
     public void startSubOrder() {
-        super.setState(OrderState.IN_PROGRESS);
+        super.setState(OrderState.EN_PROGRESO);
         super.setStartedDate(new Date());
     }
 
     public void finishSubOrder() {
-        super.setState(OrderState.FINISHED);
+        super.setState(OrderState.FINALIZADO);
         super.setFinishedDate(new Date());
     }
 

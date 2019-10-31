@@ -51,5 +51,6 @@ public class OrderModel {
                 product.toDTO(), subOrderSet, state, startedDate, orderAmount, description, id
         );
     }
+    // todo hacer cambiar el estado a la siguiente suborden y setearle la fecha afin a la suborden finalizada y cambiarle el estado
 
 }

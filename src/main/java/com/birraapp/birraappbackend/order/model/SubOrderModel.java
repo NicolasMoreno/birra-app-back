@@ -24,13 +24,9 @@ public class SubOrderModel {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id")
-    private EmployeeModel author; // TODO ver estos
+    private EmployeeModel responsible; // TODO ver estos
 
     private OrderState state;
-
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "customer_order_id")
-//    private OrderModel customerOrder;
 
     private OrderProcess orderProcess;
 
@@ -40,9 +36,12 @@ public class SubOrderModel {
     private Date startedDate;
     private Date finishedDate;
 
+    private Double initialData; // dato inicial para la métrica
+    private Double finishData; //  dato final para la métrica
+
     public UpdateSubOrderDTO toDTO() {
         return new UpdateSubOrderDTO(
-                author.toDTO(), state, orderProcess,
+                responsible.toDTO(), state, orderProcess,
                 name, description, startedDate, finishedDate, id
         ); // customerOrder.toDTO(),
     }

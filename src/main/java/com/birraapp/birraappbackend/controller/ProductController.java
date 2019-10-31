@@ -1,10 +1,13 @@
 package com.birraapp.birraappbackend.controller;
 
 import com.birraapp.birraappbackend.product.ProductService;
+import com.birraapp.birraappbackend.product.model.dto.ProductAvailabilityDTO;
 import com.birraapp.birraappbackend.stock.model.dto.RequestOrderDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/products")
@@ -27,6 +30,11 @@ public class ProductController {
 
     @GetMapping("/{productId}/max")
     public ResponseEntity getMaxProduct(@PathVariable Long productId){
-        return ResponseEntity.ok("hola");
+        return ResponseEntity.ok(productService.checkMaxProductAvailability(productId));
+    }
+
+    @PostMapping("/all-max")
+    public ResponseEntity getAllMaxProducts(@RequestBody List<Long> productsId) {
+        return ResponseEntity.ok(productsId.stream().map( productId -> new ProductAvailabilityDTO(productId, productService.checkMaxProductAvailability(productId))));
     }
 }

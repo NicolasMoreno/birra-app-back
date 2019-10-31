@@ -9,6 +9,7 @@ import com.birraapp.birraappbackend.stock.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,9 +46,15 @@ public class ProductService {
                 .allMatch(item -> stockService.checkMaterialStock(item.getMaterial().getId(), item.getQuantity() * productAmount));
     }
 
+
+    // todo test this.
     public Integer checkMaxProductAvailability(Long productId) {
         final List<ProductItem> productItems = productItemRepository.findByProduct_Id(productId);
-        return 0;
+        return productItems
+                .stream()
+                .map(item -> stockService.checkMaxMaterialAvailability(item.getQuantity(), item.getMaterial().getId()))
+                .min(Comparator.naturalOrder())
+                .get();
     }
 
 }

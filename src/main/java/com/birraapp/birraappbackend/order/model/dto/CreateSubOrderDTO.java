@@ -24,6 +24,8 @@ public class CreateSubOrderDTO {
     private String description;
     private Date startedDate;
     private Date finishedDate;
+    private Double initialData;
+    private Double finishData;
 
     public SubOrderModel toModel() {
         final EmployeeModel employeeModel = author == null ? null : author.toModel(); // todo recibir de algún lado el intérprete del proceso. supongo que se lo updatea cuando se inicia el proceso
@@ -31,7 +33,27 @@ public class CreateSubOrderDTO {
                 null, employeeModel,
                 state,
                 orderProcess, name, description,
-                startedDate, finishedDate
+                startedDate, finishedDate, null, null
         );
+    }
+
+    public void changeSubOrderStatus(Double data, OrderState status) {
+        if (status == OrderState.EN_PROGRESO) {
+            startSubOrder(data);
+        } else if (status == OrderState.FINALIZADO) {
+            finishSubOrder(data);
+        }
+    }
+
+    private void startSubOrder(Double initialData) {
+        setState(OrderState.EN_PROGRESO);
+        setInitialData(initialData);
+        setStartedDate(new Date());
+    }
+
+    private void finishSubOrder(Double finishData) {
+        setState(OrderState.FINALIZADO);
+        setFinishData(finishData);
+        setFinishedDate(new Date());
     }
 }

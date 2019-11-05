@@ -13,7 +13,7 @@ public class SubOrdersManager {
 
     public static Set<CreateSubOrderDTO> buildNewSubOrders() {
         final HashSet<CreateSubOrderDTO> subOrders = new HashSet<>();
-        subOrders.add(buildNewSubOrder(OrderProcess.MOLIENDA));
+        subOrders.add(buildNonStartedSubOrder(OrderProcess.MOLIENDA));
         subOrders.add(buildNonStartedSubOrder(OrderProcess.MACERADO));
         subOrders.add(buildNonStartedSubOrder(OrderProcess.RECIRCULADO_LAVADO));
         subOrders.add(buildNonStartedSubOrder(OrderProcess.HERVIDO));
@@ -27,13 +27,13 @@ public class SubOrdersManager {
 
     public static CreateSubOrderDTO buildNewSubOrder(OrderProcess process) {
         return new CreateSubOrderDTO(
-                null, OrderState.EN_PROGRESO, null, "", "", new Date(), null
+                null, OrderState.EN_PROGRESO, process, "", "", new Date(), null, null,null
         );
     }
 
     public static CreateSubOrderDTO buildNonStartedSubOrder(OrderProcess process) {
         return new CreateSubOrderDTO(
-                null, OrderState.NO_EMPEZADO, null, "", "", null, null
+                null, OrderState.NO_EMPEZADO, process, "", "", null, null, null,null
         );
     }
 }

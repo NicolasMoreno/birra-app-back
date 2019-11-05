@@ -1,7 +1,10 @@
 package com.birraapp.birraappbackend.order;
 
 import com.birraapp.birraappbackend.order.model.OrderModel;
+import com.birraapp.birraappbackend.order.model.OrderState;
+import com.birraapp.birraappbackend.order.model.dto.ChangeOrderStatusDTO;
 import com.birraapp.birraappbackend.order.model.dto.CreateOrderDTO;
+import com.birraapp.birraappbackend.order.model.dto.CreateSubOrderDTO;
 import com.birraapp.birraappbackend.order.model.dto.UpdateOrderDTO;
 import com.birraapp.birraappbackend.product.model.ProductModel;
 import com.birraapp.birraappbackend.stock.StockService;
@@ -44,6 +47,11 @@ public class OrderService {
 
     public Iterable<OrderModel> getAll() {
         return orderRepository.findAll();
+    }
+
+    public OrderModel updateOrderProcess(UpdateOrderDTO order, ChangeOrderStatusDTO changeOrderStatusDTO) {
+        order.changeSubOrderStatus(changeOrderStatusDTO.getProcess(), changeOrderStatusDTO.getData(), changeOrderStatusDTO.getState());
+        return order.toModel();
     }
 
 }

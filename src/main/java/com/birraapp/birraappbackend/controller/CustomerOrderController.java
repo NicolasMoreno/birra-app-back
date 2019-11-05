@@ -1,7 +1,10 @@
 package com.birraapp.birraappbackend.controller;
 
 import com.birraapp.birraappbackend.order.OrderService;
+import com.birraapp.birraappbackend.order.model.OrderModel;
 import com.birraapp.birraappbackend.order.model.dto.CreateOrderDTO;
+import com.birraapp.birraappbackend.order.model.dto.ChangeOrderStatusDTO;
+import com.birraapp.birraappbackend.order.model.dto.UpdateOrderDTO;
 import com.birraapp.birraappbackend.product.ProductService;
 import com.birraapp.birraappbackend.product.model.ProductModel;
 import com.birraapp.birraappbackend.stock.model.dto.RequestOrderDTO;
@@ -10,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -36,11 +41,23 @@ public class CustomerOrderController {
 
     @GetMapping("/all")
     public ResponseEntity getAllOrders() {
-        return ResponseEntity.ok(orderService.getAll());
+        final List<UpdateOrderDTO> responseList = new ArrayList<>();
+        orderService.getAll().iterator().forEachRemaining(elem -> responseList.add(elem.toDTO()));
+        return ResponseEntity.ok(responseList);
     }
 
     @GetMapping("/{orderId}")
     public ResponseEntity getOrderById(@PathVariable Long orderId) {
         return ResponseEntity.ok(orderService.findOrderById(orderId));
+    }
+
+    @PostMapping("/change-process-status")
+    public ResponseEntity startOrderProcess(@RequestBody ChangeOrderStatusDTO changeOrderStatusDTO) {
+        final Optional<OrderModel> optionalOrder = orderService.findOrderById(changeOrderStatusDTO.getCustomerOrderId());
+        if (optionalOrder.isPresent()) {
+            return ResponseEntity.ok(orderService.updateOrderProcess(optionalOrder.get().toDTO(), changeOrderStatusDTO));
+        } else {
+            return ResponseEntity.badRequest().body("Orden no se encontró");
+        }
     }
 }

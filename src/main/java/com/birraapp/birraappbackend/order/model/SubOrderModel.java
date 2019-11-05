@@ -41,8 +41,8 @@ public class SubOrderModel {
 
     public UpdateSubOrderDTO toDTO() {
         return new UpdateSubOrderDTO(
-                responsible.toDTO(), state, orderProcess,
-                name, description, startedDate, finishedDate, id
+                null, state, orderProcess,
+                name, description, startedDate, finishedDate, id, initialData, finishData
         ); // customerOrder.toDTO(),
     }
 

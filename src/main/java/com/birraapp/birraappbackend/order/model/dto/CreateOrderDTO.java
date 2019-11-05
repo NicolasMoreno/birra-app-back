@@ -31,7 +31,7 @@ public class CreateOrderDTO {
     public static CreateOrderDTO startNewOrder(UpdateProductDTO product, Integer orderAmount, String description) {
         return new CreateOrderDTO(
                 product, SubOrdersManager.buildNewSubOrders(),
-                OrderState.EN_PROGRESO, new Date(),null,
+                OrderState.NO_EMPEZADO, new Date(),null,
                 orderAmount, description
         );
     }
@@ -43,4 +43,6 @@ public class CreateOrderDTO {
                 state, startedDate, finishedDate, orderAmount, description
         );
     }
+
+
 }

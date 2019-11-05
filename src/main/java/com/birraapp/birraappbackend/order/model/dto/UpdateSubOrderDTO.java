@@ -15,24 +15,15 @@ import java.util.Date;
 @NoArgsConstructor
 public class UpdateSubOrderDTO extends CreateSubOrderDTO {
     private Long id;
+
     public UpdateSubOrderDTO(UpdateEmployeeDTO author, OrderState state,
                              OrderProcess orderProcess,
                              String name, String description, Date startedDate,
-                             Date finishedDate, Long id) {
+                             Date finishedDate, Long id, Double initialData, Double finishData) {
         super(author, state,
                 orderProcess, name, description,
-                startedDate, finishedDate);
+                startedDate, finishedDate, initialData, finishData);
         this.id = id;
-    }
-
-    public void startSubOrder() {
-        super.setState(OrderState.EN_PROGRESO);
-        super.setStartedDate(new Date());
-    }
-
-    public void finishSubOrder() {
-        super.setState(OrderState.FINALIZADO);
-        super.setFinishedDate(new Date());
     }
 
     public SubOrderModel toModel() {

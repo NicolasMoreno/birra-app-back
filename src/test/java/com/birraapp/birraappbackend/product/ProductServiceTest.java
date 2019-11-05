@@ -172,7 +172,7 @@ public class ProductServiceTest extends AbstractIntegrationTest {
 
         final OrderModel newOrder = orderService.createNewOrder(productToTest, requestOrder);
         Assert.assertEquals(newOrder.getProduct().getId(), productToTest.getId());
-        Assert.assertEquals(newOrder.getState(), OrderState.EN_PROGRESO);
+        Assert.assertEquals(newOrder.getState(), OrderState.NO_EMPEZADO);
 
         final Optional<StockModel> optionalLupulo = stockService.findStockByMaterialId(lupulo.getId());
         Assert.assertTrue(optionalLupulo.isPresent());

@@ -24,6 +24,8 @@ import org.junit.Assert;
 
 import java.util.Optional;
 
+import static com.birraapp.birraappbackend.TestUtils.*;
+
 
 public class ProductServiceTest extends AbstractIntegrationTest {
 
@@ -180,17 +182,4 @@ public class ProductServiceTest extends AbstractIntegrationTest {
 
     }
 
-    private ProductItemDTO generateProductItem(CreateMaterialDTO material, Double quantity) {
-        return new ProductItemDTO(material, quantity);
-    }
-
-    private CreateProductDTO generateProduct(String name, String description, ProductItemDTO ...productItems) {
-        return new CreateProductDTO(name, description, productItems);
-    }
-
-    private CreateMaterialDTO generateMaterial(String materialName, UnitModel unit) {
-        return new CreateMaterialDTO(
-                materialName, unit
-        );
-    }
 }

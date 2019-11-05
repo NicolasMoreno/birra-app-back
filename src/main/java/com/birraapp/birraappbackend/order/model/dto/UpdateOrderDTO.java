@@ -40,7 +40,7 @@ public class UpdateOrderDTO extends CreateOrderDTO {
 
     public CreateSubOrderDTO actualSubOrder() {
         final Optional<CreateSubOrderDTO> first = super.getSubOrders().stream().filter(process -> process.getState() == OrderState.EN_PROGRESO || process.getState() == OrderState.EMITIDO).findFirst();
-        return first.orElse(getProcess(OrderProcess.MOLIENDA));
+        return first.orElse(super.getSubOrders().stream().allMatch(subOrder -> subOrder.getState() == OrderState.FINALIZADO) ? getProcess(OrderProcess.GASIFICADO) : getProcess(OrderProcess.MOLIENDA));
     }
 
     public OrderProcess actualOrderProcess() {
@@ -63,7 +63,7 @@ public class UpdateOrderDTO extends CreateOrderDTO {
             process.changeSubOrderStatus(data, state);
             if (state == OrderState.FINALIZADO) armNextProcess(orderProcess);
             if (process.getState() == OrderState.EN_PROGRESO) super.setState(OrderState.EN_PROGRESO);
-            else if (process.getState() == OrderState.FINALIZADO && process.getOrderProcess() == OrderProcess.GASIFICADO) super.setState(OrderState.FINALIZADO);
+
         }
     }
 
@@ -77,6 +77,7 @@ public class UpdateOrderDTO extends CreateOrderDTO {
             case FERMENTACION: getProcess(OrderProcess.MADURADO).setState(OrderState.EMITIDO); break;
             case MADURADO: getProcess(OrderProcess.EMBOTELLADO).setState(OrderState.EMITIDO); break;
             case EMBOTELLADO: getProcess(OrderProcess.GASIFICADO).setState(OrderState.EMITIDO); break;
+            case GASIFICADO: setState(OrderState.FINALIZADO); break;
         }
     }
 

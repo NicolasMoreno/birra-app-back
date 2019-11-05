@@ -48,7 +48,9 @@ public class CustomerOrderController {
 
     @GetMapping("/{orderId}")
     public ResponseEntity getOrderById(@PathVariable Long orderId) {
-        return ResponseEntity.ok(orderService.findOrderById(orderId));
+        final Optional<OrderModel> orderById = orderService.findOrderById(orderId);
+        if (orderById.isPresent()) return ResponseEntity.ok(orderById.get().toDTO());
+        else return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontró la orden");
     }
 
     @PostMapping("/change-process-status")

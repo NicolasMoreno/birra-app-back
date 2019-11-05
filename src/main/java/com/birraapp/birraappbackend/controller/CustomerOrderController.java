@@ -32,6 +32,11 @@ public class CustomerOrderController {
         return ResponseEntity.ok(orderService.addOrder(createOrderDTO));
     }
 
+    @GetMapping("/{orderId}")
+    public ResponseEntity getOrder(@PathVariable Long orderId) {
+        return ResponseEntity.ok(orderService.findOrderById(orderId));
+    }
+
     @PostMapping("/start")
     public ResponseEntity startNewOrder(@RequestBody RequestOrderDTO requestOrderDTO) {
         final Optional<ProductModel> productToProduce = productService.findProductById(requestOrderDTO.getProductId());

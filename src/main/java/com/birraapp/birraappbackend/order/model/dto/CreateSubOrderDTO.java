@@ -33,7 +33,7 @@ public class CreateSubOrderDTO {
                 null, employeeModel,
                 state,
                 orderProcess, name, description,
-                startedDate, finishedDate, null, null
+                startedDate, finishedDate, initialData, finishData
         );
     }
 

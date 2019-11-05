@@ -24,7 +24,7 @@ public class UpdateOrderDTO extends CreateOrderDTO {
     public UpdateOrderDTO(UpdateProductDTO product, Set<CreateSubOrderDTO> subOrders, OrderState state, Date startedDate, Integer orderAmount, String description, Long id) {
         super(product, subOrders, state, startedDate, null, orderAmount, description);
         this.id = id;
-        this.actualProcess = getActualOrderProcess();
+        this.actualProcess = actualOrderProcess();
     }
 
     public OrderModel toModel() {
@@ -38,13 +38,13 @@ public class UpdateOrderDTO extends CreateOrderDTO {
         return first.orElse(null);
     }
 
-    public CreateSubOrderDTO getActualSubOrder() {
-        final Optional<CreateSubOrderDTO> first = super.getSubOrders().stream().filter(process -> process.getState() == OrderState.EN_PROGRESO).findFirst();
+    public CreateSubOrderDTO actualSubOrder() {
+        final Optional<CreateSubOrderDTO> first = super.getSubOrders().stream().filter(process -> process.getState() == OrderState.EN_PROGRESO || process.getState() == OrderState.EMITIDO).findFirst();
         return first.orElse(getProcess(OrderProcess.MOLIENDA));
     }
 
-    public OrderProcess getActualOrderProcess() {
-        return getActualSubOrder().getOrderProcess();
+    public OrderProcess actualOrderProcess() {
+        return actualSubOrder().getOrderProcess();
     }
 
     public OrderState getState() {
@@ -61,8 +61,22 @@ public class UpdateOrderDTO extends CreateOrderDTO {
         final CreateSubOrderDTO process = getProcess(orderProcess);
         if (process != null) {
             process.changeSubOrderStatus(data, state);
+            if (state == OrderState.FINALIZADO) armNextProcess(orderProcess);
             if (process.getState() == OrderState.EN_PROGRESO) super.setState(OrderState.EN_PROGRESO);
             else if (process.getState() == OrderState.FINALIZADO && process.getOrderProcess() == OrderProcess.GASIFICADO) super.setState(OrderState.FINALIZADO);
+        }
+    }
+
+    private void armNextProcess(OrderProcess orderProcess) {
+        switch (orderProcess) {
+            case MOLIENDA: getProcess(OrderProcess.MACERADO).setState(OrderState.EMITIDO); break;
+            case MACERADO: getProcess(OrderProcess.RECIRCULADO_LAVADO).setState(OrderState.EMITIDO); break;
+            case RECIRCULADO_LAVADO: getProcess(OrderProcess.HERVIDO).setState(OrderState.EMITIDO); break;
+            case HERVIDO: getProcess(OrderProcess.ENFRIADO).setState(OrderState.EMITIDO); break;
+            case ENFRIADO: getProcess(OrderProcess.FERMENTACION).setState(OrderState.EMITIDO); break;
+            case FERMENTACION: getProcess(OrderProcess.MADURADO).setState(OrderState.EMITIDO); break;
+            case MADURADO: getProcess(OrderProcess.EMBOTELLADO).setState(OrderState.EMITIDO); break;
+            case EMBOTELLADO: getProcess(OrderProcess.GASIFICADO).setState(OrderState.EMITIDO); break;
         }
     }
 

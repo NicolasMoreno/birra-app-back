@@ -55,7 +55,8 @@ public class CustomerOrderController {
     public ResponseEntity startOrderProcess(@RequestBody ChangeOrderStatusDTO changeOrderStatusDTO) {
         final Optional<OrderModel> optionalOrder = orderService.findOrderById(changeOrderStatusDTO.getCustomerOrderId());
         if (optionalOrder.isPresent()) {
-            return ResponseEntity.ok(orderService.updateOrderProcess(optionalOrder.get().toDTO(), changeOrderStatusDTO));
+            final OrderModel orderModel = orderService.updateOrderProcess(optionalOrder.get().toDTO(), changeOrderStatusDTO);
+            return ResponseEntity.ok(orderModel.toDTO());
         } else {
             return ResponseEntity.badRequest().body("Orden no se encontró");
         }

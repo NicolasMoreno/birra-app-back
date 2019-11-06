@@ -40,7 +40,7 @@ public class SubOrderModel {
     private Double initialData; // dato inicial para la métrica
     private Double finishData; //  dato final para la métrica
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "unit_id")
     private UnitModel unit;
     private Double additionalData;

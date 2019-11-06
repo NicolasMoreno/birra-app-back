@@ -40,7 +40,7 @@ public class UpdateOrderDTO extends CreateOrderDTO {
 
     public CreateSubOrderDTO actualSubOrder() {
         final Optional<CreateSubOrderDTO> first = super.getSubOrders().stream().filter(process -> process.getState() == OrderState.EN_PROGRESO || process.getState() == OrderState.EMITIDO).findFirst();
-        return first.orElse(super.getSubOrders().stream().allMatch(subOrder -> subOrder.getState() == OrderState.FINALIZADO) ? getProcess(OrderProcess.GASIFICADO) : getProcess(OrderProcess.MOLIENDA));
+        return first.orElse(super.getSubOrders().stream().allMatch(subOrder -> subOrder.getState() == OrderState.FINALIZADO) ? getProcess(OrderProcess.CALIDAD) : getProcess(OrderProcess.MOLIENDA));
     }
 
     public OrderProcess actualOrderProcess() {
@@ -52,15 +52,15 @@ public class UpdateOrderDTO extends CreateOrderDTO {
         if (b) {
             return OrderState.NO_EMPEZADO;
         } else {
-            if (getProcess(OrderProcess.GASIFICADO).getState() == OrderState.FINALIZADO) return OrderState.FINALIZADO;
+            if (getProcess(OrderProcess.CALIDAD).getState() == OrderState.FINALIZADO) return OrderState.FINALIZADO;
             else return OrderState.EN_PROGRESO;
         }
     }
 
-    public void changeSubOrderStatus(OrderProcess orderProcess, Double data, OrderState state) {
+    public void changeSubOrderStatus(OrderProcess orderProcess, Double data, Double additionalData, OrderState state) {
         final CreateSubOrderDTO process = getProcess(orderProcess);
         if (process != null) {
-            process.changeSubOrderStatus(data, state);
+            process.changeSubOrderStatus(data, additionalData, state);
             if (state == OrderState.FINALIZADO) armNextProcess(orderProcess);
             if (process.getState() == OrderState.EN_PROGRESO) super.setState(OrderState.EN_PROGRESO);
 
@@ -76,8 +76,8 @@ public class UpdateOrderDTO extends CreateOrderDTO {
             case ENFRIADO: getProcess(OrderProcess.FERMENTACION).setState(OrderState.EMITIDO); break;
             case FERMENTACION: getProcess(OrderProcess.MADURADO).setState(OrderState.EMITIDO); break;
             case MADURADO: getProcess(OrderProcess.EMBOTELLADO).setState(OrderState.EMITIDO); break;
-            case EMBOTELLADO: getProcess(OrderProcess.GASIFICADO).setState(OrderState.EMITIDO); break;
-            case GASIFICADO: setState(OrderState.FINALIZADO); break;
+            case EMBOTELLADO: getProcess(OrderProcess.CALIDAD).setState(OrderState.EMITIDO); break;
+            case CALIDAD: setState(OrderState.FINALIZADO); break;
         }
     }
 

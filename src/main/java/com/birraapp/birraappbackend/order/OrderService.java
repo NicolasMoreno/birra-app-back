@@ -54,7 +54,7 @@ public class OrderService {
     }
 
     public OrderModel updateOrderProcess(UpdateOrderDTO order, ChangeOrderStatusDTO changeOrderStatusDTO) {
-        order.changeSubOrderStatus(changeOrderStatusDTO.getProcess(), changeOrderStatusDTO.getData(), changeOrderStatusDTO.getState());
+        order.changeSubOrderStatus(changeOrderStatusDTO.getProcess(), changeOrderStatusDTO.getData(), changeOrderStatusDTO.getAdditionalData(), changeOrderStatusDTO.getState());
         return orderRepository.save(order.toModel());
     }
 

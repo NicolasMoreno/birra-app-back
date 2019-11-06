@@ -38,12 +38,13 @@ public class CreateSubOrderDTO {
         );
     }
 
-    public void changeSubOrderStatus(Double data, OrderState status) {
+    public void changeSubOrderStatus(Double data, Double additionalData, OrderState status) {
         if (status == OrderState.EN_PROGRESO) {
             startSubOrder(data);
         } else if (status == OrderState.FINALIZADO) {
             finishSubOrder(data);
         }
+        setAdditionalData(additionalData);
     }
 
     private void startSubOrder(Double initialData) {

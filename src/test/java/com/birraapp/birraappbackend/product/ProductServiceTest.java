@@ -58,7 +58,7 @@ public class ProductServiceTest extends AbstractIntegrationTest {
 
         litrosUnit = unitService.saveUnit(new UnitModel(1, "LITRO", "Lt.", QuantityType.REAL));
         kilosUnit = unitService.saveUnit(new UnitModel(2, "KILO", "Kg.", QuantityType.REAL));
-        unitsUnit = unitService.saveUnit(new UnitModel(3, "UNIDADES", "un", QuantityType.INTEGER));
+        unitsUnit = unitService.saveUnit(new UnitModel(3, "UNIDAD", "un", QuantityType.INTEGER));
 
         unitService.saveUnit(litrosUnit);
         unitService.saveUnit(kilosUnit);

@@ -5,16 +5,15 @@ import com.birraapp.birraappbackend.order.model.OrderState;
 import com.birraapp.birraappbackend.order.model.dto.CreateSubOrderDTO;
 import com.birraapp.birraappbackend.product.model.UnitModel;
 
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Stream;
 
 
 public class SubOrdersManager {
 
     public static Set<CreateSubOrderDTO> buildNewSubOrders(List<UnitModel> unitList) {
+        final UnitModel unidad = unitList.stream().filter(unit -> unit.getUnitName().equalsIgnoreCase("Unidad")).findFirst().get();
         final UnitModel kilos = unitList.stream().filter(unit -> unit.getUnitName().equalsIgnoreCase("Kilo")).findFirst().get();
         final UnitModel celcius = unitList.stream().filter(unit -> unit.getUnitName().equalsIgnoreCase("Celcius")).findFirst().get();
         final HashSet<CreateSubOrderDTO> subOrders = new HashSet<>();
@@ -26,7 +25,7 @@ public class SubOrdersManager {
         subOrders.add(buildNonStartedSubOrder(OrderProcess.FERMENTACION, celcius));
         subOrders.add(buildNonStartedSubOrder(OrderProcess.MADURADO, celcius));
         subOrders.add(buildNonStartedSubOrder(OrderProcess.EMBOTELLADO, null));
-        subOrders.add(buildNonStartedSubOrder(OrderProcess.GASIFICADO, null));
+        subOrders.add(buildNonStartedSubOrder(OrderProcess.CALIDAD, unidad));
         return subOrders;
     }
 

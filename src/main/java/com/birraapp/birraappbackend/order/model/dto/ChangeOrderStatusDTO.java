@@ -13,6 +13,7 @@ public class ChangeOrderStatusDTO {
 
     private Long customerOrderId;
     private Double data;
+    private Double additionalData;
     private OrderProcess process;
     private OrderState state;
 

@@ -71,7 +71,9 @@ public class DatabaseLoader implements CommandLineRunner {
         final MaterialModel chapitas = new MaterialModel("Chapitas", savedUnidades);
         final MaterialModel levadura = new MaterialModel("Levadura", savedKilos);
         final MaterialModel lupulo = new MaterialModel("Lúpulo", savedKilos);
-        final MaterialModel malta = new MaterialModel("Malta", savedKilos);
+        final MaterialModel maltaHoney = new MaterialModel("Malta Honey", savedKilos);
+        final MaterialModel maltaStout = new MaterialModel("Malta Stout", savedKilos);
+        final MaterialModel maltaScottish = new MaterialModel("Malta Scottish", savedKilos);
         final MaterialModel miel = new MaterialModel("Miel", savedKilos);
 
         final MaterialModel aguaModel = materialService.createMaterial(agua.toDTO());
@@ -79,7 +81,9 @@ public class DatabaseLoader implements CommandLineRunner {
         final MaterialModel chapitasModel = materialService.createMaterial(chapitas.toDTO());
         final MaterialModel levaduraModel = materialService.createMaterial(levadura.toDTO());
         final MaterialModel lupuloModel = materialService.createMaterial(lupulo.toDTO());
-        final MaterialModel maltaModel = materialService.createMaterial(malta.toDTO());
+        final MaterialModel maltaHoneyModel = materialService.createMaterial(maltaHoney.toDTO());
+        final MaterialModel maltaStoutModel = materialService.createMaterial(maltaStout.toDTO());
+        final MaterialModel maltaScottishModel = materialService.createMaterial(maltaScottish.toDTO());
         final MaterialModel mielModel = materialService.createMaterial(miel.toDTO());
 
         // STOCK
@@ -88,22 +92,44 @@ public class DatabaseLoader implements CommandLineRunner {
         stockRepository.save(new StockModel(null, chapitasModel, 5000D));
         stockRepository.save(new StockModel(null, levaduraModel, 500D));
         stockRepository.save(new StockModel(null, lupuloModel, 100D));
-        stockRepository.save(new StockModel(null, maltaModel, 100D));
+        stockRepository.save(new StockModel(null, maltaHoneyModel, 100D));
+        stockRepository.save(new StockModel(null, maltaStoutModel, 100D));
+        stockRepository.save(new StockModel(null, maltaScottishModel, 100D));
         stockRepository.save(new StockModel(null, mielModel, 100D));
 
 
-        final CreateProductDTO productDTO = generateProduct("Golden",
-                "Cerveza Rubia 5% 4.5%",
+        final CreateProductDTO productDTO = generateProduct("Honey",
+                "Cerveza Honey 5% 4.5%",
                 generateProductItem(lupuloModel.toDTO(), 0.005D),
                 generateProductItem(levaduraModel.toDTO(), 0.0025D),
                 generateProductItem(aguaModel.toDTO(), 0.34D),
                 generateProductItem(chapitasModel.toDTO(), 1D),
                 generateProductItem(botellasModel.toDTO(), 1D),
-                generateProductItem(maltaModel.toDTO(), 0.25D),
+                generateProductItem(maltaHoneyModel.toDTO(), 0.25D),
                 generateProductItem(mielModel.toDTO(), 0.05D)
         );
 
+        final CreateProductDTO stoutDTO = generateProduct("Stout",
+                "Cerveza Stout 5% 4.5%",
+                generateProductItem(lupuloModel.toDTO(), 0.005D),
+                generateProductItem(levaduraModel.toDTO(), 0.0025D),
+                generateProductItem(aguaModel.toDTO(), 0.34D),
+                generateProductItem(chapitasModel.toDTO(), 1D),
+                generateProductItem(botellasModel.toDTO(), 1D),
+                generateProductItem(maltaStoutModel.toDTO(), 0.25D));
+
+        final CreateProductDTO scottish = generateProduct("Scottish",
+                "Cerveza Scottish 5% 4.5%",
+                generateProductItem(lupuloModel.toDTO(), 0.005D),
+                generateProductItem(levaduraModel.toDTO(), 0.0025D),
+                generateProductItem(aguaModel.toDTO(), 0.34D),
+                generateProductItem(chapitasModel.toDTO(), 1D),
+                generateProductItem(botellasModel.toDTO(), 1D),
+                generateProductItem(maltaScottishModel.toDTO(), 0.25D));
+
         productService.saveProduct(productDTO);
+        productService.saveProduct(stoutDTO);
+        productService.saveProduct(scottish);
 
     }
 
@@ -126,7 +152,7 @@ public class DatabaseLoader implements CommandLineRunner {
 
 
         final SectorModel recirculado = new SectorModel("RECIRCULADO", new HashSet<>());
-        final SectorModel embotellado_y_gasificado = new SectorModel("EMBOTELLADO Y GASIFICADO", new HashSet<>());
+        final SectorModel embotellado_y_gasificado = new SectorModel("EMBOTELLADO Y CALIDAD", new HashSet<>());
         final SectorModel enfriado = new SectorModel("ENFRIADO", new HashSet<>());
         final SectorModel molido = new SectorModel("MOLIDO", new HashSet<>());
         final SectorModel macerado = new SectorModel("MACERADO", new HashSet<>());

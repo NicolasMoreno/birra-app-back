@@ -95,17 +95,17 @@ public class OrderServiceTest extends AbstractIntegrationTest {
 
         orderModel = orderService.updateOrderProcess(orderModel.toDTO(), generateChangeOrder(orderModel.getId(), OrderProcess.EMBOTELLADO, OrderState.EN_PROGRESO));
         orderModel = orderService.updateOrderProcess(orderModel.toDTO(), generateChangeOrder(orderModel.getId(), OrderProcess.EMBOTELLADO, OrderState.FINALIZADO));
-        Assert.assertEquals(orderModel.toDTO().getActualProcess(), OrderProcess.GASIFICADO);
+        Assert.assertEquals(orderModel.toDTO().getActualProcess(), OrderProcess.CALIDAD);
         Assert.assertNotEquals(orderModel.getState(), OrderState.FINALIZADO);
 
-        orderModel = orderService.updateOrderProcess(orderModel.toDTO(), generateChangeOrder(orderModel.getId(), OrderProcess.GASIFICADO, OrderState.EN_PROGRESO));
-        orderModel = orderService.updateOrderProcess(orderModel.toDTO(), generateChangeOrder(orderModel.getId(), OrderProcess.GASIFICADO, OrderState.FINALIZADO));
-        Assert.assertEquals(orderModel.toDTO().getActualProcess(), OrderProcess.GASIFICADO);
+        orderModel = orderService.updateOrderProcess(orderModel.toDTO(), generateChangeOrder(orderModel.getId(), OrderProcess.CALIDAD, OrderState.EN_PROGRESO));
+        orderModel = orderService.updateOrderProcess(orderModel.toDTO(), generateChangeOrder(orderModel.getId(), OrderProcess.CALIDAD, OrderState.FINALIZADO));
+        Assert.assertEquals(orderModel.toDTO().getActualProcess(), OrderProcess.CALIDAD);
         Assert.assertEquals(orderModel.getState(), OrderState.FINALIZADO);
 
     }
 
     private ChangeOrderStatusDTO generateChangeOrder(Long orderId, OrderProcess process, OrderState state) {
-        return new ChangeOrderStatusDTO(orderId, Math.random(), process, state);
+        return new ChangeOrderStatusDTO(orderId, Math.random(), Math.random() , process, state);
     }
 }

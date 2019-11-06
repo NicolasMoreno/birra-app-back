@@ -1,6 +1,7 @@
 package com.birraapp.birraappbackend.order;
 
 import com.birraapp.birraappbackend.AbstractIntegrationTest;
+import com.birraapp.birraappbackend.indicators.IndicatorsService;
 import com.birraapp.birraappbackend.order.model.OrderModel;
 import com.birraapp.birraappbackend.order.model.OrderProcess;
 import com.birraapp.birraappbackend.order.model.OrderState;
@@ -16,6 +17,7 @@ import com.birraapp.birraappbackend.product.model.UnitModel;
 import com.birraapp.birraappbackend.product.model.dto.CreateMaterialDTO;
 import com.birraapp.birraappbackend.product.model.dto.CreateProductDTO;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -33,9 +35,13 @@ public class OrderServiceTest extends AbstractIntegrationTest {
     @Autowired
     private UnitService unitService;
 
-    @Test
-    public void updateOrderProcess() {
+    @Autowired
+    private IndicatorsService indicatorsService;
 
+    private OrderModel orderModel;
+
+    @Before
+    public void before() {
         final UnitModel litrosUnit = unitService.saveUnit(new UnitModel(1, "LITRO", "Lt.", QuantityType.REAL));
         final UnitModel kilosUnit = unitService.saveUnit(new UnitModel(2, "KILO", "Kg.", QuantityType.REAL));
         final UnitModel unitsUnit = unitService.saveUnit(new UnitModel(3, "UNIDAD", "un", QuantityType.INTEGER));
@@ -60,7 +66,12 @@ public class OrderServiceTest extends AbstractIntegrationTest {
                 generateProductItem(botellas.toDTO(), 1D)
         );
         final ProductModel productToTest = productService.saveProduct(productDTO);
-        OrderModel orderModel = orderService.addOrder(CreateOrderDTO.startNewOrder(productToTest.toDTO(), 20, "Test", unitService.getAllUnits()));
+        orderModel = orderService.addOrder(CreateOrderDTO.startNewOrder(productToTest.toDTO(), 20, "Test", unitService.getAllUnits()));
+    }
+
+    @Test
+    public void updateOrderProcess() {
+
         Assert.assertNotNull("Asserting order has ID", orderModel.getId());
         Assert.assertEquals(orderModel.getState(), OrderState.NO_EMPEZADO);
 
@@ -103,6 +114,10 @@ public class OrderServiceTest extends AbstractIntegrationTest {
         Assert.assertEquals(orderModel.toDTO().getActualProcess(), OrderProcess.CALIDAD);
         Assert.assertEquals(orderModel.getState(), OrderState.FINALIZADO);
 
+    }
+
+    public void testMetrics() {
+        indicatorsService.getTemperatureMetrics(OrderProcess.HERVIDO);
     }
 
     private ChangeOrderStatusDTO generateChangeOrder(Long orderId, OrderProcess process, OrderState state) {

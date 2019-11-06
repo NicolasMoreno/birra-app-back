@@ -6,6 +6,7 @@ import com.birraapp.birraappbackend.order.model.dto.ChangeOrderStatusDTO;
 import com.birraapp.birraappbackend.order.model.dto.CreateOrderDTO;
 import com.birraapp.birraappbackend.order.model.dto.CreateSubOrderDTO;
 import com.birraapp.birraappbackend.order.model.dto.UpdateOrderDTO;
+import com.birraapp.birraappbackend.product.UnitService;
 import com.birraapp.birraappbackend.product.model.ProductModel;
 import com.birraapp.birraappbackend.stock.StockService;
 import com.birraapp.birraappbackend.stock.model.dto.RequestOrderDTO;
@@ -22,6 +23,9 @@ public class OrderService {
 
     @Autowired
     private StockService stockService;
+
+    @Autowired
+    private UnitService unitService;
 
     public OrderModel addOrder(CreateOrderDTO createOrderDTO) {
         return orderRepository.save(createOrderDTO.toModel());
@@ -42,7 +46,7 @@ public class OrderService {
 
     public OrderModel createNewOrder(ProductModel productModel, RequestOrderDTO requestOrderDTO) {
         productModel.getMaterials().forEach(material -> stockService.consumeMaterial(material.getMaterial().getId(), material.getQuantity() * requestOrderDTO.getOrderAmount()));
-        return addOrder(CreateOrderDTO.startNewOrder(productModel.toDTO(), requestOrderDTO.getOrderAmount(), requestOrderDTO.getDescription()));
+        return addOrder(CreateOrderDTO.startNewOrder(productModel.toDTO(), requestOrderDTO.getOrderAmount(), requestOrderDTO.getDescription(), unitService.getAllUnits()));
     }
 
     public Iterable<OrderModel> getAll() {

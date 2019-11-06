@@ -54,12 +54,15 @@ public class DatabaseLoader implements CommandLineRunner {
         addSectorsUserEmployee();
 
         // UNIDADES
-        final UnitModel litros = new UnitModel(null, "Litros", "Lt.", QuantityType.REAL);
-        final UnitModel kilos = new UnitModel(null, "Kilos", "kg.", QuantityType.REAL);
-        final UnitModel unidades = new UnitModel(null, "Unidades", "ud.", QuantityType.INTEGER);
+        final UnitModel litros = new UnitModel(null, "Litro", "Lt.", QuantityType.REAL);
+        final UnitModel kilos = new UnitModel(null, "Kilo", "kg.", QuantityType.REAL);
+        final UnitModel unidades = new UnitModel(null, "Unidad", "ud.", QuantityType.INTEGER);
+        final UnitModel temperatura = new UnitModel(null, "Celcius", "˚C", QuantityType.INTEGER);
+
         final UnitModel savedLitros = unitRepository.save(litros);
         final UnitModel savedKilos = unitRepository.save(kilos);
         final UnitModel savedUnidades = unitRepository.save(unidades);
+        final UnitModel savedCelcius = unitRepository.save(temperatura);
 
         // Materiales
 

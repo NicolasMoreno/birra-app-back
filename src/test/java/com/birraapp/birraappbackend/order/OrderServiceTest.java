@@ -21,7 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import static com.birraapp.birraappbackend.TestUtils.*;
 import static com.birraapp.birraappbackend.TestUtils.generateMaterial;
-import static org.junit.Assert.*;
 
 public class OrderServiceTest extends AbstractIntegrationTest {
 
@@ -39,7 +38,8 @@ public class OrderServiceTest extends AbstractIntegrationTest {
 
         final UnitModel litrosUnit = unitService.saveUnit(new UnitModel(1, "LITRO", "Lt.", QuantityType.REAL));
         final UnitModel kilosUnit = unitService.saveUnit(new UnitModel(2, "KILO", "Kg.", QuantityType.REAL));
-        final UnitModel unitsUnit = unitService.saveUnit(new UnitModel(3, "UNIDADES", "un", QuantityType.INTEGER));
+        final UnitModel unitsUnit = unitService.saveUnit(new UnitModel(3, "UNIDAD", "un", QuantityType.INTEGER));
+        final UnitModel celcius = unitService.saveUnit(new UnitModel(4, "CELCIUS", "˚C", QuantityType.REAL));
 
         final CreateMaterialDTO material1 = generateMaterial("Lupulo", kilosUnit);
         final CreateMaterialDTO material2 = generateMaterial("Agua", litrosUnit);
@@ -60,7 +60,7 @@ public class OrderServiceTest extends AbstractIntegrationTest {
                 generateProductItem(botellas.toDTO(), 1D)
         );
         final ProductModel productToTest = productService.saveProduct(productDTO);
-        OrderModel orderModel = orderService.addOrder(CreateOrderDTO.startNewOrder(productToTest.toDTO(), 20, "Test"));
+        OrderModel orderModel = orderService.addOrder(CreateOrderDTO.startNewOrder(productToTest.toDTO(), 20, "Test", unitService.getAllUnits()));
         Assert.assertNotNull("Asserting order has ID", orderModel.getId());
         Assert.assertEquals(orderModel.getState(), OrderState.NO_EMPEZADO);
 

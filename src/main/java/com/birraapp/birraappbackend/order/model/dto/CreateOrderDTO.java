@@ -4,13 +4,16 @@ import com.birraapp.birraappbackend.order.model.OrderModel;
 import com.birraapp.birraappbackend.order.model.OrderState;
 import com.birraapp.birraappbackend.order.model.SubOrderModel;
 import com.birraapp.birraappbackend.order.model.utils.SubOrdersManager;
+import com.birraapp.birraappbackend.product.model.UnitModel;
 import com.birraapp.birraappbackend.product.model.dto.UpdateProductDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -28,9 +31,11 @@ public class CreateOrderDTO {
     private Integer orderAmount;
     private String description;
 
-    public static CreateOrderDTO startNewOrder(UpdateProductDTO product, Integer orderAmount, String description) {
+    public static CreateOrderDTO startNewOrder(UpdateProductDTO product, Integer orderAmount, String description, Iterable<UnitModel> allUnits) {
+        List<UnitModel> unitList = new ArrayList<>();
+        allUnits.iterator().forEachRemaining(unitList::add);
         return new CreateOrderDTO(
-                product, SubOrdersManager.buildNewSubOrders(),
+                product, SubOrdersManager.buildNewSubOrders(unitList),
                 OrderState.NO_EMPEZADO, new Date(),null,
                 orderAmount, description
         );

@@ -5,6 +5,7 @@ import com.birraapp.birraappbackend.employee.model.dto.UpdateEmployeeDTO;
 import com.birraapp.birraappbackend.order.model.OrderProcess;
 import com.birraapp.birraappbackend.order.model.OrderState;
 import com.birraapp.birraappbackend.order.model.SubOrderModel;
+import com.birraapp.birraappbackend.product.model.UnitModel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,20 +21,20 @@ public class CreateSubOrderDTO {
     private UpdateEmployeeDTO author;
     private OrderState state;
     private OrderProcess orderProcess;
-    private String name;
-    private String description;
     private Date startedDate;
     private Date finishedDate;
     private Double initialData;
     private Double finishData;
+    private UnitModel unit;
+    private Double additionalData;
 
     public SubOrderModel toModel() {
         final EmployeeModel employeeModel = author == null ? null : author.toModel(); // todo recibir de algún lado el intérprete del proceso. supongo que se lo updatea cuando se inicia el proceso
         return new SubOrderModel(
                 null, employeeModel,
                 state,
-                orderProcess, name, description,
-                startedDate, finishedDate, initialData, finishData
+                orderProcess,
+                startedDate, finishedDate, initialData, finishData, unit, additionalData
         );
     }
 

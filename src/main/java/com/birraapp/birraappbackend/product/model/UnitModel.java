@@ -17,7 +17,7 @@ import javax.validation.constraints.NotNull;
 public class UnitModel {
 
     @Id
-    @NotNull @GeneratedValue
+    @GeneratedValue
     private Integer id;
 
     @Column(name = "unit_name", nullable = false)

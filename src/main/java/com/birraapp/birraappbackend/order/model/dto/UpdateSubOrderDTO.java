@@ -4,6 +4,7 @@ import com.birraapp.birraappbackend.employee.model.dto.UpdateEmployeeDTO;
 import com.birraapp.birraappbackend.order.model.OrderProcess;
 import com.birraapp.birraappbackend.order.model.OrderState;
 import com.birraapp.birraappbackend.order.model.SubOrderModel;
+import com.birraapp.birraappbackend.product.model.UnitModel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,12 +18,12 @@ public class UpdateSubOrderDTO extends CreateSubOrderDTO {
     private Long id;
 
     public UpdateSubOrderDTO(UpdateEmployeeDTO author, OrderState state,
-                             OrderProcess orderProcess,
-                             String name, String description, Date startedDate,
-                             Date finishedDate, Long id, Double initialData, Double finishData) {
+                             OrderProcess orderProcess, Date startedDate,
+                             Date finishedDate, Long id, Double initialData, Double finishData,
+                             UnitModel unit, Double additionalData) {
         super(author, state,
-                orderProcess, name, description,
-                startedDate, finishedDate, initialData, finishData);
+                orderProcess,
+                startedDate, finishedDate, initialData, finishData, unit, additionalData);
         this.id = id;
     }
 
